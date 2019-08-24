@@ -1,8 +1,9 @@
-import { customElement, log } from './hmr';
+import { customElement, log, logger } from './hmr';
 
 @customElement('my-comp')
 export default class extends HTMLElement {
     constructor() {
+        logger.log('--------------------');
         super();
     }
 

@@ -1,7 +1,10 @@
 if (document.body) {
-    const oldBodyHtml = document.body.innerHTML;
-    document.body.innerHTML = '';
-    document.body.innerHTML = oldBodyHtml;
+    setTimeout(() => {
+        logger.log('clearing screen-------------------------');
+        const oldBodyHtml = document.body.innerHTML;
+        document.body.innerHTML = '';
+        document.body.innerHTML = oldBodyHtml;
+    }, 500);
 }
 
 /**
@@ -104,23 +107,14 @@ CustomElementRegistry.prototype.define = function(name: string, constructor: any
             return Reflect.construct(newElement, args, _options);
         },
         get: function(target, prop, receiver) {
-            if (
-                prop === 'connectedcallback' ||
-                prop === 'disconnectedCallback' ||
-                prop === 'adoptedCallback' ||
-                prop === 'attributeChangedCallback'
-            ) {
-                const origMethod = target[prop];
-                return function(...args: any) {
-                    logger.log(elementName, prop, 'override-called');
-                    const newElement = elementCache.getElement(elementName);
-
-                    return newElement.prototype[prop];
-                };
-            } else {
-                //@ts-ignore
-                return Reflect.get(...arguments);
-            }
+            console.log('get called ? ', prop);
+            //@ts-ignore
+            return Reflect.get(...arguments);
+        },
+        apply: function(target, prop, receiver) {
+            console.log('apply called ? ');
+            //@ts-ignore
+            return Reflect.apply(...arguments);
         }
     });
     return define.apply(this, [name, proxyElement, options]);
