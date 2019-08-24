@@ -1,3 +1,9 @@
+if (document.body) {
+    const oldBodyHtml = document.body.innerHTML;
+    document.body.innerHTML = '';
+    document.body.innerHTML = oldBodyHtml;
+}
+
 /**
  * use this to easly stop all messages
  */
@@ -38,10 +44,36 @@ export function log(target: any, name: any, descriptor: any) {
 }
 
 /**
+ * Simple class to hoold newest instance
+ */
+export class elementCache {
+    static setElement(name: string, elementClass: any) {
+        logger.log('setElement', name, 'called');
+        this.init();
+        (<any>globalThis).fuseboxHMR[name] = elementClass;
+    }
+
+    static getElement(name: string) {
+        logger.log('getElement', name, 'called');
+        this.init();
+        return (<any>globalThis).fuseboxHMR[name];
+    }
+
+    static init() {
+        if (!(<any>globalThis).fuseboxHMR) {
+            // use map ?
+            (<any>globalThis).fuseboxHMR = {};
+        }
+    }
+}
+
+/**
  * helper descorator, need something that calls us everytime after hmr runs so we get the new class instance
  */
 export function customElement(elementName: string, extended?: ElementDefinitionOptions) {
     return function reg(elementClass: Function) {
+        elementCache.setElement(elementName, elementClass);
+
         if (!customElements.get(elementName)) {
             if (extended) {
                 customElements.define(elementName, elementClass, extended);
@@ -63,14 +95,32 @@ CustomElementRegistry.prototype.define = function(name: string, constructor: any
 
     // wrap constructor in proxy
     const proxyElement = new Proxy(constructor, {
-        construct(element, args, _options) {
-            logger.log(elementName, 'constructor', 'called');
-            /*             if (!customElements.get(elementName)) {
-                define.apply(this, [elementName, constructor, options]);
-            } */
+        construct: function(element, args, _options) {
+            logger.log(elementName, 'constructor', 'override-called');
+
+            const newElement = elementCache.getElement(elementName);
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/construct
             // new element(element, args, _options);
-            return Reflect.construct(element, args, _options);
+            return Reflect.construct(newElement, args, _options);
+        },
+        get: function(target, prop, receiver) {
+            if (
+                prop === 'connectedcallback' ||
+                prop === 'disconnectedCallback' ||
+                prop === 'adoptedCallback' ||
+                prop === 'attributeChangedCallback'
+            ) {
+                const origMethod = target[prop];
+                return function(...args: any) {
+                    logger.log(elementName, prop, 'override-called');
+                    const newElement = elementCache.getElement(elementName);
+
+                    return newElement.prototype[prop];
+                };
+            } else {
+                //@ts-ignore
+                return Reflect.get(...arguments);
+            }
         }
     });
     return define.apply(this, [name, proxyElement, options]);
