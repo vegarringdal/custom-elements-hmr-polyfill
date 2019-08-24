@@ -4,7 +4,7 @@
   "description": "try and get fusebox hmr working with \"customElements\" API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node fuse"
   },
   "repository": {
     "type": "git",
