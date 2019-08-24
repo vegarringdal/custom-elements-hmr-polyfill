@@ -1,8 +1,7 @@
-import { log } from './hmr';
+import { customElement, log } from './hmr';
 
-export class ElementX extends HTMLElement {
-    static ELEMENT_NAME = 'my-comp';
-
+@customElement('my-comp')
+export default class extends HTMLElement {
     constructor() {
         super();
     }
@@ -23,8 +22,4 @@ export class ElementX extends HTMLElement {
 
     @log
     attributeChangedCallback() {}
-}
-
-if (!customElements.get(ElementX.ELEMENT_NAME)) {
-    customElements.define(ElementX.ELEMENT_NAME, ElementX);
 }

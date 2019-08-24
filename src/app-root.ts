@@ -1,8 +1,7 @@
-import { log } from './hmr';
+import { customElement, log } from './hmr';
 
+@customElement('app-root')
 export class ElementX extends HTMLElement {
-    static ELEMENT_NAME = 'app-root';
-
     constructor() {
         super();
     }
@@ -25,8 +24,4 @@ export class ElementX extends HTMLElement {
 
     @log
     attributeChangedCallback() {}
-}
-
-if (!customElements.get(ElementX.ELEMENT_NAME)) {
-    customElements.define(ElementX.ELEMENT_NAME, ElementX);
 }
