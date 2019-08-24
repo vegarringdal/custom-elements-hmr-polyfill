@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "pflannery.vscode-versionlens",
+    "esbenp.prettier-vscode"
+  ]
+}

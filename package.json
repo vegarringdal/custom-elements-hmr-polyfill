@@ -1,0 +1,39 @@
+{
+  "name": "customelements-hmr",
+  "version": "1.0.0",
+  "description": "try and get fusebox hmr working with \"customElements\" API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vegarringdal/customElements-hmr.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vegarringdal/customElements-hmr/issues"
+  },
+  "homepage": "https://github.com/vegarringdal/customElements-hmr#readme",
+  "devDependencies": {
+    "fuse-box": "^4.0.0-alpha.80",
+    "fuse-box-typechecker": "^3.0.0-next.13",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
+    "prettier": "^1.18.2",
+    "tslib": "^1.10.0",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{json,md,ts}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
