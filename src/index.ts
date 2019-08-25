@@ -1,3 +1,3 @@
 import './hmr';
-import './app-root';
 import './my-comp';
+import './app-root';
