@@ -1,6 +1,5 @@
 if (document.body) {
     setTimeout(() => {
-        logger.log('clearing screen-------------------------');
         const oldBodyHtml = document.body.innerHTML;
         document.body.innerHTML = '';
         document.body.innerHTML = oldBodyHtml;
@@ -8,57 +7,20 @@ if (document.body) {
 }
 
 /**
- * use this to easly stop all messages
- */
-export class logger {
-    static log(...args: any) {
-        console.log(...args);
-    }
-
-    static warn(...args: any) {
-        console.warn(...args);
-    }
-
-    static error(...args: any) {
-        console.error(...args);
-    }
-}
-
-/**
- * simple log decorator so we see what functions are called on classes
- * @param target
- * @param name
- * @param descriptor
- */
-export function log(target: any, name: any, descriptor: any) {
-    const NAME = name;
-    const original = descriptor.value;
-    if (typeof original === 'function') {
-        descriptor.value = function(...args: any) {
-            logger.log(this.tagName, NAME, 'called');
-            try {
-                return original.apply(this, args);
-            } catch (e) {
-                throw e;
-            }
-        };
-    }
-    return descriptor;
-}
-
-/**
- * Simple class to hoold newest instance
+ * Simple class to hold newest instance
  */
 export class elementCache {
     static setElement(name: string, elementClass: any) {
-        logger.log('setElement', name, 'called');
         this.init();
-        (<any>globalThis).fuseboxHMR[name] = elementClass;
+
+        if (!elementCache.getElement(name)) {
+            (<any>globalThis).fuseboxHMR[name] = elementClass;
+        }
     }
 
     static getElement(name: string) {
-        logger.log('getElement', name, 'called');
         this.init();
+
         return (<any>globalThis).fuseboxHMR[name];
     }
 
@@ -71,7 +33,7 @@ export class elementCache {
 }
 
 /**
- * helper descorator, need something that calls us everytime after hmr runs so we get the new class instance
+ * helper decorator, need something that calls us every time after hmr runs so we get the new class instance
  */
 export function customElement(elementName: string, extended?: ElementDefinitionOptions) {
     return function reg(elementClass: Function) {
@@ -83,8 +45,6 @@ export function customElement(elementName: string, extended?: ElementDefinitionO
             } else {
                 customElements.define(elementName, elementClass);
             }
-        } else {
-            logger.log('customElement', 'called', 'element was registered');
         }
     };
 }
@@ -92,30 +52,61 @@ export function customElement(elementName: string, extended?: ElementDefinitionO
 // https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry
 // override define
 const define = CustomElementRegistry.prototype.define;
-CustomElementRegistry.prototype.define = function(name: string, constructor: any, options: object) {
-    const elementName = name;
-    logger.log(elementName, 'define', 'called');
+CustomElementRegistry.prototype.define = function(
+    elementName: string,
+    constructor: any,
+    options: object
+) {
+    const getCurrentElement = () => {
+        return elementCache.getElement(elementName);
+    };
+
+    // generic abstract web component class
+    // implements the standard interface and calls
+    // the respective current implementation
+    const shallowClass = class extends HTMLElement {
+        static get observedAttributes() {
+            const el = getCurrentElement();
+
+            // might not have been implemented
+            if (el.prototype.observedAttributes) {
+                return el.prototype.observedAttributes.apply(this, arguments);
+            }
+            return [];
+        }
+
+        connectedCallback() {
+            return getCurrentElement().prototype.connectedCallback.apply(this, arguments);
+        }
+
+        disconnectedCallback() {
+            return getCurrentElement().prototype.disconnectedCallback.apply(this, arguments);
+        }
+
+        adoptedCallback() {
+            return getCurrentElement().prototype.disconnectedCallback.apply(this, arguments);
+        }
+
+        attributeChangedCallback() {
+            return getCurrentElement().prototype.attributeChangedCallback.apply(this, arguments);
+        }
+    };
 
     // wrap constructor in proxy
-    const proxyElement = new Proxy(constructor, {
+    const proxyElement = new Proxy(shallowClass, {
         construct: function(element, args, _options) {
-            logger.log(elementName, 'constructor', 'override-called');
-
-            const newElement = elementCache.getElement(elementName);
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/construct
             // new element(element, args, _options);
-            return Reflect.construct(newElement, args, _options);
+            return Reflect.construct(getCurrentElement(), args, _options);
         },
         get: function(target, prop, receiver) {
-            console.log('get called ? ', prop);
             //@ts-ignore
             return Reflect.get(...arguments);
         },
         apply: function(target, prop, receiver) {
-            console.log('apply called ? ');
             //@ts-ignore
             return Reflect.apply(...arguments);
         }
     });
-    return define.apply(this, [name, proxyElement, options]);
+    return define.apply(this, [elementName, proxyElement, options]);
 };
