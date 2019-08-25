@@ -12,10 +12,7 @@ if (document.body) {
 export class elementCache {
     static setElement(name: string, elementClass: any) {
         this.init();
-
-        if (!elementCache.getElement(name)) {
-            (<any>globalThis).fuseboxHMR[name] = elementClass;
-        }
+        (<any>globalThis).fuseboxHMR[name] = elementClass;
     }
 
     static getElement(name: string) {
