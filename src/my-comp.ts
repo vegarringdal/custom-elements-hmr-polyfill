@@ -1,27 +1,21 @@
-import { customElement } from './hmr';
+import { DefineCustomElement } from './decorator/DefineCustomElement';
 
-@customElement('my-comp')
+@DefineCustomElement('my-comp')
 export default class extends HTMLElement {
     'some-attribute': string = 'foo';
 
     constructor() {
         super();
-        console.log('[my-comp] constructor()');
+        this['some-attribute'] = 'huhu1';
     }
 
-    observedAttributes() {
-        const observedAttributes = ['some-attribute'];
-        console.log('observedAttributes', observedAttributes);
-        return observedAttributes;
+    static get observedAttributes() {
+        return ['some-attribute'];
     }
 
     connectedCallback() {
         console.log(' [my-comp] connectedCallback()');
-
-        const name = this.getAttribute('name');
-        this.innerHTML = /*html*/ `
-            <p>my comp: ${name}</p>
-        `;
+        this.innerHTML = this.render();
     }
 
     disconnectedCallback() {
@@ -34,5 +28,17 @@ export default class extends HTMLElement {
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         console.log('[my-comp] attribute changed', ...arguments);
+        this['some-attribute'] = newValue;
+        this.innerHTML = this.render();
+    }
+
+    render() {
+        return `
+            <p>my-comp: some-attribute ${this.lala}: ${this['some-attribute']}</p>
+        `;
+    }
+
+    get lala() {
+        return 'huhu';
     }
 }
