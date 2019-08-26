@@ -1,4 +1,4 @@
-export function DefineCustomElement(
+export function defineCustomElement(
     elementName: string,
     elementDefinitionOptions?: ElementDefinitionOptions
 ) {

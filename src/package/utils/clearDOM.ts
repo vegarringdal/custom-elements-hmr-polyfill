@@ -1,6 +1,6 @@
-const clearDOM = () => {
+export function clearDOM() {
     if (document.body) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             // simulate a Virtual DOM re-render
             // TODO: How to find out (after HMR) which elements actually changed?
             // TODO: The whole optimization not to reload the page is dependent of being able to tell the VDOM
@@ -8,7 +8,7 @@ const clearDOM = () => {
             const oldBodyHtml = document.body.innerHTML;
             document.body.innerHTML = '';
             document.body.innerHTML = oldBodyHtml;
-        }, 100);
+        });
     }
 };
-clearDOM();
+
