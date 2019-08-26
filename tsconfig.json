@@ -11,7 +11,7 @@
         "emitDecoratorMetadata": true,
         "baseUrl": "./",
         "paths": {
-            "custom-element-hmr": ["src/package/"]
+            "custom-elements-hmr-polyfill": ["src/package/"]
         }
     },
     "exclude": ["node_modules", "dist", "dev"]

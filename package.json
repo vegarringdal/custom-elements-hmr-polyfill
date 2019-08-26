@@ -1,7 +1,7 @@
 {
-  "name": "custom-element-hmr-polyfill",
+  "name": "custom-elements-hmr-polyfill",
   "version": "1.0.0-alpha.1",
-  "description": "Custom Element HMR polyfill",
+  "description": "Custom Elements HMR polyfill",
   "main": "index.js",
   "scripts": {
     "start": "node fuse",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vegarringdal/custom-element-hmr-polyfill.git"
+    "url": "git+https://github.com/vegarringdal/custom-elements-hmr-polyfill.git"
   },
   "author": "vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<??>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vegarringdal/custom-element-hmr-polyfill/issues"
+    "url": "https://github.com/vegarringdal/custom-elements-hmr-polyfill/issues"
   },
-  "homepage": "https://github.com/vegarringdal/custom-element-hmr-polyfill#readme",
+  "homepage": "https://github.com/vegarringdal/custom-elements-hmr-polyfill#readme",
   "devDependencies": {
     "fuse-box": "^4.0.0-next.88",
     "fuse-box-typechecker": "^3.0.0-next.13",

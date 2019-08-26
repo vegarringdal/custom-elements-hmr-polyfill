@@ -1,4 +1,4 @@
-import { DefineCustomElement } from 'custom-element-hmr';
+import { DefineCustomElement } from 'custom-elements-hmr-polyfill';
 
 @DefineCustomElement('my-comp')
 export default class extends HTMLElement {

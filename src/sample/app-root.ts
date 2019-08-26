@@ -1,4 +1,4 @@
-import { DefineCustomElement } from 'custom-element-hmr';
+import { DefineCustomElement } from 'custom-elements-hmr-polyfill';
 
 @DefineCustomElement('app-root')
 export class ElementX extends HTMLElement {

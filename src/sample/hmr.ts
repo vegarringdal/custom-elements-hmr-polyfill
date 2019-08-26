@@ -1,4 +1,4 @@
-import { applyPolyfill, clearDOM } from 'custom-element-hmr';
+import { applyPolyfill, clearDOM } from 'custom-elements-hmr-polyfill';
 
 // apply polly fill
 applyPolyfill();
