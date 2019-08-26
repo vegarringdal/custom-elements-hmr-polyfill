@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
+    "prebootstrap": "npx st-rm-rf ./node_modules package-lock.json",
+    "bootstrap": "npm i",
     "start": "node fuse",
     "watch": "node fuse",
     "build": "node ./node_modules/typescript/bin/tsc --build ./tsconfig-build.json",

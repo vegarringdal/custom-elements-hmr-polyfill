@@ -23,6 +23,12 @@ export function overrideCustomElementDefine() {
                     }
                 });
                 originalDefineFn.apply(this, [elementName, hookClass, options]);
+            } else {
+                const onCustomElementChange = (<any>globalThis).hmrCache.onCustomElementChange;
+
+                if (onCustomElementChange && typeof onCustomElementChange === 'function') {
+                    onCustomElementChange(elementName, impl, options);
+                }
             }
             setMostRecentImpl(elementName, impl);
         };
