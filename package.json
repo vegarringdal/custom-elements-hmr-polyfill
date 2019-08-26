@@ -2,7 +2,8 @@
   "name": "custom-elements-hmr-polyfill",
   "version": "1.0.0-alpha.1",
   "description": "Custom Elements HMR polyfill",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "start": "node fuse",
     "watch": "node fuse",
