@@ -1,4 +1,4 @@
-import { DefineCustomElement } from './decorator/DefineCustomElement';
+import { DefineCustomElement } from 'custom-element-hmr';
 
 @DefineCustomElement('my-comp')
 export default class extends HTMLElement {

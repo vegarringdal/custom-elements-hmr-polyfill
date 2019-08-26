@@ -1,23 +1,24 @@
 {
-  "name": "customelements-hmr",
-  "version": "1.0.0",
-  "description": "try and get fusebox hmr working with \"customElements\" API",
+  "name": "custom-element-hmr-polyfill",
+  "version": "1.0.0-alpha.1",
+  "description": "Custom Element HMR polyfill",
   "main": "index.js",
   "scripts": {
-    "start": "node fuse"
+    "start": "node fuse",
+    "build": "node ./node_modules/typescript/bin/tsc --build ./tsconfig-build.json "
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vegarringdal/customElements-hmr.git"
+    "url": "git+https://github.com/vegarringdal/custom-element-hmr-polyfill.git"
   },
-  "author": "",
+  "author": "vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<??>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vegarringdal/customElements-hmr/issues"
+    "url": "https://github.com/vegarringdal/custom-element-hmr-polyfill/issues"
   },
-  "homepage": "https://github.com/vegarringdal/customElements-hmr#readme",
+  "homepage": "https://github.com/vegarringdal/custom-element-hmr-polyfill#readme",
   "devDependencies": {
-    "fuse-box": "^4.0.0-alpha.80",
+    "fuse-box": "^4.0.0-next.88",
     "fuse-box-typechecker": "^3.0.0-next.13",
     "husky": "^3.0.4",
     "lint-staged": "^9.2.3",

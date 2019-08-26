@@ -1,4 +1,4 @@
-const clearDOM = () => {
+export function clearDOM() {
     if (document.body) {
         requestAnimationFrame(() => {
             // simulate a Virtual DOM re-render
@@ -11,4 +11,4 @@ const clearDOM = () => {
         });
     }
 };
-clearDOM();
+

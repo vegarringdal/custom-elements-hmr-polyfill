@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "incremental": true,
+        "tsBuildInfoFile": "./dist/compilation.info", 
+        "rootDir": "./src/package",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "declaration": true,
+        "target": "es6",
+        "module": "commonjs" ,
+        "downlevelIteration": true,
+        "strict": true ,
+        "esModuleInterop": true ,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./"
+    },
+    "exclude": ["node_modules", "dist", "dev", "src/sample"]
+}

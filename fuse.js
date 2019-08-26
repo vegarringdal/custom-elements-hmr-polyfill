@@ -7,9 +7,9 @@ class Context {
             target: 'browser',
             homeDir: './',
             output: `dev`,
-            entry: `src/index.ts`,
+            entry: `src/sample/index.ts`,
             webIndex: {
-                template: `src/index.html`
+                template: `src/sample/index.html`
             },
             logging: { level: 'verbose' },
             dependencies: {
@@ -22,7 +22,6 @@ class Context {
             watch: { ignored: ['dist', 'dev'] },
             hmr: true,
             devServer: true,
-            
             plugins: [
                 pluginTypeChecker({
                     basePath: '.',

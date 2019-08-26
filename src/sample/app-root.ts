@@ -1,4 +1,4 @@
-import { DefineCustomElement } from './decorator/DefineCustomElement';
+import { DefineCustomElement } from 'custom-element-hmr';
 
 @DefineCustomElement('app-root')
 export class ElementX extends HTMLElement {

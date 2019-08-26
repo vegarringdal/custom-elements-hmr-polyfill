@@ -1,5 +1,5 @@
 # customElements-hmr
-try and get fusebox hmr working with "customElements" API 
+Custom Element HMR polyfill
 
 How to use
 * `npm install`

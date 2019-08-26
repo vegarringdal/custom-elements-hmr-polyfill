@@ -114,5 +114,7 @@ const overrideCustomElementDefine = () => {
     }
 };
 
-initCache();
-overrideCustomElementDefine();
+export function applyPolyfill() {
+    initCache();
+    overrideCustomElementDefine();
+}
