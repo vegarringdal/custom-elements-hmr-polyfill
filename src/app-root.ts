@@ -1,28 +1,31 @@
-import { customElement } from './hmr';
+import { DefineCustomElement } from './decorator/DefineCustomElement';
 
-@customElement('app-root')
+@DefineCustomElement('app-root')
 export class ElementX extends HTMLElement {
+    constructor() {
+        super();
+
+        console.log('[app-root] Change me on-the-fly and be surprised! :)');
+    }
+
     connectedCallback() {
-        this.innerHTML = `
-            <ul>
-                <my-comp name="1" some-attribute="foo"></my-comp>
-                <my-comp name="2" some-attribute="bar"></my-comp>
-            </ul>
-        `;
+        this.innerHTML = this.render();
 
         setTimeout(() => {
             const myFirstComp = this.querySelector('my-comp');
 
             if (myFirstComp) {
-                console.log('myFirstComp setAttribute');
-                myFirstComp.setAttribute('some-attribute', 'baz');
+                myFirstComp.setAttribute('some-attribute', 'foo-mutated1');
             }
-        }, 500);
+        }, 250);
     }
 
-    disconnectedCallback() {}
-
-    adoptedCallback() {}
-
-    attributeChangedCallback() {}
+    render() {
+        return `
+            <ul>
+                <my-comp name="1" some-attribute="foo"></my-comp>
+                <my-comp name="2" some-attribute="bar"></my-comp>
+            </ul>
+        `;
+    }
 }
