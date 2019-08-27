@@ -8,9 +8,7 @@ export const BLACKLISTED_PATCH_METHODS = [
     'attributeChangedCallback'
 ];
 
-export function constructInstance(elementName: string, args: any, newTarget: any) {
-    const mostRecentImpl = getMostRecentImpl(elementName);
-
+export function constructInstance(mostRecentImpl: any, args: any, newTarget: any) {
     // Constructed instance partly points to outdated impl details.
     // This patch loop makes sure that the hook methods aren't overridden,
     // the constructor stays intact but methods, getters, setters and fields

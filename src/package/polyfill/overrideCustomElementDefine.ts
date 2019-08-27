@@ -1,4 +1,9 @@
-import { setMostRecentImpl, isCacheInitialized, setCacheAsInitialized } from './hmrCache';
+import {
+    setMostRecentImpl,
+    isCacheInitialized,
+    setCacheAsInitialized,
+    getMostRecentImpl
+} from './hmrCache';
 import { createHookClass } from './createHookClass';
 import { constructInstance } from './constructInstance';
 
@@ -19,7 +24,8 @@ export function overrideCustomElementDefine() {
             if (!registeredCustomElement) {
                 const hookClass = new Proxy(createHookClass(elementName, impl), {
                     construct: function(element, args, newTarget) {
-                        return constructInstance(elementName, args, newTarget);
+                        const mostRecentImpl = getMostRecentImpl(elementName);
+                        return constructInstance(mostRecentImpl || impl, args, newTarget);
                     }
                 });
                 originalDefineFn.apply(this, [elementName, hookClass, options]);
