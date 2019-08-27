@@ -1,9 +1,89 @@
 # custom-elements-hmr-polyfill
 Custom Element HMR polyfill
 
-How to start sample:
+### How to start sample:
 * `npm install`
 * `npm start`
 
-How to build:
+### How to build:
 * `npm build`
+
+### How to use:
+
+Very early version of this.
+But here is 2 ways to use it.
+
+HMR depends on you calling the define when code have been updated. So if are calling defined based on `"customElements.get(elementName)` then you will need to change this.
+
+
+
+```ts
+
+// load the hmr, see samples for code
+import `./hmr`
+
+
+//check if HMR is active
+if((<any>globalThis).hmrCache){
+    // call customElements.define
+} else {
+    // you what every you do normally
+}
+
+```
+---
+
+######Sample 1:
+
+Add `hmr.ts` file to you project.
+This needs to run before everything else.
+
+
+```ts
+import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
+
+// apply polly fill
+applyPolyfill();
+
+// reflow page (will clear window.body and put html back)
+reflowDOM();
+
+// listen for code changes
+onCustomElementChange((elementName: string, impl: any, options: ElementDefinitionOptions) => {
+    console.log('Detected a code change for custom element', elementName);
+});
+
+```
+---
+
+######Sample 2:
+
+Add `hmr.ts` file to you project
+This needs to run before everything else.
+
+If you are using `import()` this might break. See sample 1 for now.
+
+```js
+import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
+
+// apply polly fill
+applyPolyfill();
+
+let awaiter: any;
+
+// listen for code changes
+onCustomElementChange((elementName: string, impl: any, options: ElementDefinitionOptions) => {
+    console.log('Detected a code change for custom element', elementName);
+
+    // most simple buffering algorithm, all reg. callbacks get cleared until one is the last one > 250ms
+    clearTimeout(awaiter);
+
+    awaiter = setTimeout(() => {
+        console.log('[Buffered reflow] Re-flowing DOM to activate updated custom elements code.');
+
+        // reflow the DOM to re-create all elements (thus replacing elements and execute the new code)
+        // TODO: This could be improved by only replacing nodes matching the elementName that changed
+        reflowDOM();
+    }, 250 /* essential buffer time*/);
+});
+```
