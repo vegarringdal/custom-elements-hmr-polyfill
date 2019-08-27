@@ -1,14 +1,14 @@
 # custom-elements-hmr-polyfill
 Custom Element HMR polyfill
 
-### How to start sample:
+## How to start sample:
 * `npm install`
 * `npm start`
 
-### How to build:
+## How to build:
 * `npm build`
 
-### How to use:
+## How to use:
 
 Very early version of this.
 But here is 2 ways to use it.
@@ -33,7 +33,7 @@ if((<any>globalThis).hmrCache){
 ```
 ---
 
-######Sample 1:
+#### Sample 1:
 
 Add `hmr.ts` file to you project.
 This needs to run before everything else.
@@ -56,7 +56,7 @@ onCustomElementChange((elementName: string, impl: any, options: ElementDefinitio
 ```
 ---
 
-######Sample 2:
+#### Sample 2:
 
 Add `hmr.ts` file to you project
 This needs to run before everything else.
