@@ -12,7 +12,7 @@ Custom Element HMR polyfill
 
 ## How to use:
 
-The limitation is observedAttributes. 
+The limitation is `observedAttributes`. 
 
 If the code of a custom element changes and returns different attribute names to observe, this change is not reflected.
 
