@@ -21,11 +21,14 @@ export function overrideCustomElementDefine() {
         ) {
             const registeredCustomElement = customElements.get(elementName);
 
+            // update cache before proxy since we need it in the createHookClass
+            // this will only be a issue when bundle is loaded after body
+            setMostRecentImpl(elementName, impl);
             if (!registeredCustomElement) {
                 const hookClass = new Proxy(createHookClass(elementName, impl), {
                     construct: function(element, args, newTarget) {
                         const mostRecentImpl = getMostRecentImpl(elementName);
-                        return constructInstance(mostRecentImpl || impl, args, newTarget);
+                        return constructInstance(mostRecentImpl, args, newTarget);
                     }
                 });
                 originalDefineFn.apply(this, [elementName, hookClass, options]);
@@ -36,7 +39,6 @@ export function overrideCustomElementDefine() {
                     onCustomElementChange(elementName, impl, options);
                 }
             }
-            setMostRecentImpl(elementName, impl);
         };
     }
 }
