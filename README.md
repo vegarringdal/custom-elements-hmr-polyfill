@@ -1,6 +1,8 @@
 # custom-elements-hmr-polyfill
 Custom Element HMR polyfill
 
+[Live Codesandbox](https://codesandbox.io/s/custom-elements-hmr-polyfill-4vd3o)
+
 ## How to start sample:
 * `npm install`
 * `npm start`
@@ -10,34 +12,19 @@ Custom Element HMR polyfill
 
 ## How to use:
 
-Very early version of this.
-But here is 2 ways to use it.
+The limitation is observedAttributes. 
 
-HMR depends on you calling the define when code have been updated. So if are calling defined based on `"customElements.get(elementName)` then you will need to change this.
+If the code of a custom element changes and returns different attribute names to observe, this change is not reflected.
 
-
-
-```ts
-
-// load the hmr, see samples for code
-import `./hmr`
-
-
-//check if HMR is active
-if((<any>globalThis).hmrCache){
-    // call customElements.define
-} else {
-    // you what every you do normally
-}
-
-```
 ---
 
 #### Sample 1:
 
 Add `hmr.ts` file to you project.
+
 This needs to run before everything else.
 
+> hmr.ts
 
 ```ts
 import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
@@ -58,10 +45,11 @@ onCustomElementChange((elementName: string, impl: any, options: ElementDefinitio
 
 #### Sample 2:
 
-Add `hmr.ts` file to you project
+Add `hmr.ts` file to you project.
+
 This needs to run before everything else.
 
-If you are using `import()` this might break. See sample 1 for now.
+> hmr.ts
 
 ```js
 import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
