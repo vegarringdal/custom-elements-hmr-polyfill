@@ -21,6 +21,14 @@ export function overrideCustomElementDefine() {
         ) {
             const registeredCustomElement = customElements.get(elementName);
 
+            // save and clear attribute so we are in control
+            impl.__observedAttributes = impl.observedAttributes;
+            Object.defineProperty(impl, 'observedAttributes', {
+                get: function() {
+                    return [];
+                }
+            });
+
             // update cache before proxy since we need it in the createHookClass
             // this will only be a issue when bundle is loaded after body
             setMostRecentImpl(elementName, impl);
