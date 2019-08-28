@@ -12,7 +12,7 @@ Custom Element HMR polyfill
 
 ## How to use:
 
-The limitation is `observedAttributes`. 
+The limitation is `observedAttributes` and this is because of a [W3C/WhatWG standard limitation](https://github.com/w3c/webcomponents/issues/829).
 
 If the code of a custom element changes and returns different attribute names to observe, this change is not reflected.
 
