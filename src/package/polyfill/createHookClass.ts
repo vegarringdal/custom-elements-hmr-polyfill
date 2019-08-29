@@ -1,4 +1,4 @@
-import { getMostRecentImpl, getSymbol } from './hmrCache';
+import { getMostRecentImpl, getSymbolAttributes, getSymbolObserver } from './hmrCache';
 
 export function createHookClass(elementName: string, originalImpl: any) {
     return class extends originalImpl {
@@ -15,7 +15,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
                 mutationList.forEach(mutation => {
                     const Impl = getMostRecentImpl(elementName);
                     const ImplProto = Impl.prototype;
-                    const attributes = Impl[getSymbol(elementName)];
+                    const attributes = Impl[getSymbolAttributes(elementName)];
 
                     if (
                         ImplProto.attributeChangedCallback &&
@@ -33,8 +33,11 @@ export function createHookClass(elementName: string, originalImpl: any) {
             };
 
             // create and observe
-            (<any>this)._observer = new MutationObserver(callback);
-            (<any>this)._observer.observe((this as unknown) as Node, observerOptions);
+            (<any>this)[getSymbolObserver(elementName)] = new MutationObserver(callback);
+            (<any>this)[getSymbolObserver(elementName)].observe(
+                (this as unknown) as Node,
+                observerOptions
+            );
 
             if (mostRecentImpl.connectedCallback) {
                 mostRecentImpl.connectedCallback.apply(this, arguments);
@@ -43,8 +46,8 @@ export function createHookClass(elementName: string, originalImpl: any) {
 
         disconnectedCallback() {
             // cleanup
-            (<any>this)._observer.disconnect();
-            (<any>this)._observer = null;
+            (<any>this)[getSymbolObserver(elementName)].disconnect();
+            (<any>this)[getSymbolObserver(elementName)] = null;
 
             const mostRecentImpl = getMostRecentImpl(elementName).prototype;
             if (mostRecentImpl.disconnectedCallback) {

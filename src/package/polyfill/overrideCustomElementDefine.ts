@@ -3,7 +3,7 @@ import {
     isCacheInitialized,
     setCacheAsInitialized,
     getMostRecentImpl,
-    getSymbol
+    getSymbolAttributes
 } from './hmrCache';
 import { createHookClass } from './createHookClass';
 import { constructInstance } from './constructInstance';
@@ -23,7 +23,7 @@ export function overrideCustomElementDefine() {
             const registeredCustomElement = customElements.get(elementName);
 
             // save and clear attribute so we are in control
-            impl[getSymbol(elementName)] = impl.observedAttributes;
+            impl[getSymbolAttributes(elementName)] = impl.observedAttributes;
             Object.defineProperty(impl, 'observedAttributes', {
                 get: () => []
             });
