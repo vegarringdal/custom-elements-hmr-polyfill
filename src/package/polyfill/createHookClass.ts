@@ -1,36 +1,36 @@
-import { getMostRecentImpl } from './hmrCache';
+import { getMostRecentImpl, getSymbol } from './hmrCache';
 
 export function createHookClass(elementName: string, originalImpl: any) {
     return class extends originalImpl {
         connectedCallback() {
             const mostRecentImpl = getMostRecentImpl(elementName).prototype;
 
-            const ctx = this;
             const observerOptions = {
                 childList: false,
                 attributes: true,
                 subtree: false
             };
 
-            function callback(mutationList: any[], observer: MutationObserver) {
+            const callback = (mutationList: any[], observer: MutationObserver) => {
                 mutationList.forEach(mutation => {
-                    const mostRecentImpl = getMostRecentImpl(elementName).prototype;
-                    const attributes = getMostRecentImpl(elementName).__observedAttributes;
+                    const Impl = getMostRecentImpl(elementName);
+                    const ImplProto = Impl.prototype;
+                    const attributes = Impl[getSymbol(elementName)];
 
                     if (
-                        mostRecentImpl.attributeChangedCallback &&
+                        ImplProto.attributeChangedCallback &&
                         attributes &&
                         attributes.indexOf(mutation.attributeName) !== -1
                     ) {
                         // call back
-                        mostRecentImpl.attributeChangedCallback.apply(ctx, [
+                        ImplProto.attributeChangedCallback.apply(this, [
                             mutation.attributeName,
                             mutation.oldValue,
                             mutation.target.getAttribute(mutation.attributeName)
                         ]);
                     }
                 });
-            }
+            };
 
             // create and observe
             (<any>this)._observer = new MutationObserver(callback);
@@ -44,7 +44,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
         disconnectedCallback() {
             // cleanup
             (<any>this)._observer.disconnect();
-            (<any>this)._observer = '';
+            (<any>this)._observer = null;
 
             const mostRecentImpl = getMostRecentImpl(elementName).prototype;
             if (mostRecentImpl.disconnectedCallback) {
