@@ -2,7 +2,8 @@ import {
     setMostRecentImpl,
     isCacheInitialized,
     setCacheAsInitialized,
-    getMostRecentImpl
+    getMostRecentImpl,
+    getSymbolAttributes
 } from './hmrCache';
 import { createHookClass } from './createHookClass';
 import { constructInstance } from './constructInstance';
@@ -20,6 +21,12 @@ export function overrideCustomElementDefine() {
             options: ElementDefinitionOptions
         ) {
             const registeredCustomElement = customElements.get(elementName);
+
+            // save and clear attribute so we are in control
+            impl[getSymbolAttributes(elementName)] = impl.observedAttributes;
+            Object.defineProperty(impl, 'observedAttributes', {
+                get: () => []
+            });
 
             // update cache before proxy since we need it in the createHookClass
             // this will only be a issue when bundle is loaded after body
