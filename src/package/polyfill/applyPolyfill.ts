@@ -1,0 +1,22 @@
+import { initCache } from './hmrCache';
+import { overrideCustomElementDefine } from './overrideCustomElementDefine';
+import { CustomElementChangeListener, onCustomElementChange } from './onCustomElementChange';
+import { createHookElementChangeListener } from './createHookElementChangeListener';
+import { ReflowStrategy } from './reflowStrategy';
+
+export function applyPolyfill(
+    reflowStrategy: ReflowStrategy = ReflowStrategy.REPLACE_BY_CLONE,
+    reflowDelayMs: number = 250,
+    onCustomElementChangeListener?: CustomElementChangeListener
+) {
+    initCache();
+    overrideCustomElementDefine();
+
+    onCustomElementChange(
+        createHookElementChangeListener(
+            reflowStrategy,
+            reflowDelayMs,
+            onCustomElementChangeListener
+        )
+    );
+}

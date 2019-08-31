@@ -1,10 +1,4 @@
-import { initCache } from './polyfill/hmrCache';
-import { overrideCustomElementDefine } from './polyfill/overrideCustomElementDefine';
-export { reflowDOM } from './utils/reflowDOM';
-export { defineCustomElement } from './decorator/defineCustomElement';
-export { onCustomElementChange } from './polyfill/onCustomElementChange';
-
-export function applyPolyfill() {
-    initCache();
-    overrideCustomElementDefine();
-}
+export { replaceByClone } from './reflow-strategy/replaceByClone';
+export { rerenderInnerHTML } from './reflow-strategy/rerenderInnerHTML';
+export { applyPolyfill } from './polyfill/applyPolyfill';
+export { ReflowStrategy } from './polyfill/reflowStrategy';

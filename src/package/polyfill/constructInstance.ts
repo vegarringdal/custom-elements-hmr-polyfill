@@ -1,5 +1,3 @@
-import { getMostRecentImpl } from './hmrCache';
-
 export const BLACKLISTED_PATCH_METHODS = [
     'constructor',
     'connectedCallback',

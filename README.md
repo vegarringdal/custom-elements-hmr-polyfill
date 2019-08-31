@@ -1,77 +1,113 @@
 # custom-elements-hmr-polyfill
-Custom Element HMR polyfill
+> 100% standard-compliant polyfill to allow WebComponent re-definition at runtime (used for HMR) 
 
-[Live Codesandbox](https://codesandbox.io/s/custom-elements-hmr-polyfill-4vd3o)
+At the time of the creation of this readme, the API `customElements.define(...)` doesn't allow to re-define a Web Component with the same tag name but a different implementation. This limitation [made it impossible to do Hot Module Replacement (HMR) with standard Web Components](https://github.com/w3c/webcomponents/issues/829). - until today. 
 
-## How to start sample:
-* `npm install`
-* `npm start`
+## Live Demo
 
-## How to build:
-* `npm build`
+- [Codesandbox](https://codesandbox.io/s/custom-elements-hmr-polyfill-4vd3o)
 
-## How to use:
+## How to install?
 
-The limitation is `observedAttributes` and this is because of a [W3C/WhatWG standard limitation](https://github.com/w3c/webcomponents/issues/829).
+- `npm install custom-elements-hmr-polyfill`
 
-If the code of a custom element changes and returns different attribute names to observe, this change is not reflected.
+## What does it do?
 
----
+This polyfill overrides the native browser API `customElement.define` and enables re-definition of Web Components at runtime.
 
-#### Sample 1:
+Once a Web Component gets re-defined, the DOM tree is traversed and all instances of the Web Component are automatically cloned and re-created. Optionally, the  `onCustomElementChange` callback is called to give you full control over the runtime behaviour in case of any Web Component re-definition:
 
-Add `hmr.ts` file to you project.
-
-This needs to run before everything else.
-
-> hmr.ts
+### Most simple integration
 
 ```ts
-import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
-// apply polly fill
+// to auto-reflow on changes, buffered, all 250ms, just run
 applyPolyfill();
-
-// reflow page (will clear window.body and put html back)
-reflowDOM();
-
-// listen for code changes
-onCustomElementChange((elementName: string, impl: any, options: ElementDefinitionOptions) => {
-    console.log('Detected a code change for custom element', elementName);
-});
-
 ```
----
 
-#### Sample 2:
+As you can see, the `autoReflow` can be buffered as well by setting `reflowBufferMs` in milliseconds. 
+The idea behind this is to limit the amount of DOM traversals and reflows when multiple re-definitions happen in a short timeframe (typical HMR use-case).
 
-Add `hmr.ts` file to you project.
+### Configure buffering to limit the amount of re-rendering
 
-This needs to run before everything else.
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
-> hmr.ts
+// if you want to customize...
+applyPolyfill(
+    // replaces matching web component elements with a new clone of the previous element
+    // and calls all lifecycle methods like the web standard suggests (default)
+    ReflowStrategy.REPLACE_BY_CLONE,
+    /* buffers changes for 500ms */ 500, 
+    /* gets called for every re-definition of a web component */
+    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
 
-```js
-import { applyPolyfill, reflowDOM, onCustomElementChange } from 'custom-elements-hmr-polyfill';
-
-// apply polly fill
-applyPolyfill();
-
-let awaiter: any;
-
-// listen for code changes
-onCustomElementChange((elementName: string, impl: any, options: ElementDefinitionOptions) => {
-    console.log('Detected a code change for custom element', elementName);
-
-    // most simple buffering algorithm, all reg. callbacks get cleared until one is the last one > 250ms
-    clearTimeout(awaiter);
-
-    awaiter = setTimeout(() => {
-        console.log('[Buffered reflow] Re-flowing DOM to activate updated custom elements code.');
-
-        // reflow the DOM to re-create all elements (thus replacing elements and execute the new code)
-        // TODO: This could be improved by only replacing nodes matching the elementName that changed
-        reflowDOM();
-    }, 250 /* essential buffer time*/);
-});
+        console.log('[Web Component code change] ', elementName, impl, options);
+    }    
+);
 ```
+### Change the reflow strategy
+
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+
+// if you want to customize...
+applyPolyfill(
+    // resets the body's innerHTML, thus rerenders all elements
+    // but doesn't call all lifecycle methods in a standard way (less calls)
+    ReflowStrategy.RERENDER_INNER_HTML,
+    /* buffers changes for 100ms */ 100, 
+    /* gets called for every re-definition of a web component */
+    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+
+        console.log('[Web Component code change] ', elementName, impl, options);
+    }    
+);
+```
+
+### Use a custom re-render strategy
+
+```ts
+import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-elements-hmr-polyfill';
+
+// if you want to customize...
+applyPolyfill(
+    /* no reflowing */ ReflowStrategy.NONE,
+    /* ignored, because reflowing is disabled */ -1, 
+    /* gets called for every re-definition of a web component */
+    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+
+        // manually reflow using rerenderInnerHTML strategy without any buffering
+        rerenderInnerHTML();
+
+        console.log('And do something more...');
+    }    
+);
+```
+
+## Browser Support
+
+This polyfill requires support of the following browser API's (natively or polyfilled).
+- `Proxy` ([polyfill](https://github.com/GoogleChrome/proxy-polyfill))
+- `MutationObserver` ([polyfill](https://github.com/megawac/MutationObserver.js/tree/master))
+- `customElements` ([polyfill](https://github.com/webcomponents/polyfills/tree/master/packages/webcomponentsjs))
+
+Polyfills for these API's must be applied *before* you apply this polyfill.
+
+## Limitations
+
+None. This polyfill is 100% web standard compliant. 
+
+The previously existing limitation of `observedAttributes` being immutable has been polyfilled using a `MutationObserver` lately. 
+
+For reference see: [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
+
+## Advanced: How to start the sample code (of this repo)?
+
+- `npm run bootstrap`
+- `npm start`
+
+## How to build a dist version of this polyfill?
+
+- `npm build`

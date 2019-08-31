@@ -2,6 +2,10 @@ import { getMostRecentImpl, getSymbolAttributes, getSymbolObserver } from './hmr
 
 export function createHookClass(elementName: string, originalImpl: any) {
     return class extends originalImpl {
+        static get observedAttributes() {
+            return [];
+        }
+
         connectedCallback() {
             const mostRecentImpl = getMostRecentImpl(elementName).prototype;
 

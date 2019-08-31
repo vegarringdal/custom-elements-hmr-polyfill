@@ -4,7 +4,7 @@ export type CustomElementChangeListener = (
     elementName: string,
     impl: any,
     options: ElementDefinitionOptions
-) => void;
+) => boolean | void;
 
 export const onCustomElementChange = (changeListener: CustomElementChangeListener) => {
     initCache();

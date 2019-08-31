@@ -1,3 +1,3 @@
-import './hmr';
+import './hmr-polyfill';
 import './my-comp';
 import './app-root';
