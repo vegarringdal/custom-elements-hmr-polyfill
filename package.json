@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/vegarringdal/custom-elements-hmr-polyfill.git"
   },
-  "author": "Vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<info@aron-homberg.de >",
+  "author": "Vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<info@aron-homberg.de>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vegarringdal/custom-elements-hmr-polyfill/issues"
