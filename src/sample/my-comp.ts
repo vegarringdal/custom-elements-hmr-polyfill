@@ -6,7 +6,7 @@ export default class extends HTMLElement {
 
     constructor() {
         super();
-        this['some-attribute'] = 'huhu1';
+        this['some-attribute'] = 'huhu';
     }
 
     static get observedAttributes() {
@@ -14,7 +14,7 @@ export default class extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log(' [my-comp] connectedCallback()');
+        console.log(' [my-comp] connectedCallb111ack()');
         this.innerHTML = this.render();
     }
 

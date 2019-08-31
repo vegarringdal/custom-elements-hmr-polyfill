@@ -17,17 +17,48 @@ This polyfill overrides the native browser API `customElement.define` and enable
 
 Once a Web Component gets re-defined, the DOM tree is traversed and all instances of the Web Component are automatically cloned and re-created. Optionally, the  `onCustomElementChange` callback is called to give you full control over the runtime behaviour in case of any Web Component re-definition:
 
+### Most simple integration
+
 ```ts
-import { applyPolyfill } from 'custom-elements-hmr-polyfill';
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
 // to auto-reflow on changes, buffered, all 250ms, just run
 applyPolyfill();
+```
+
+As you can see, the `autoReflow` can be buffered as well by setting `reflowBufferMs` in milliseconds. 
+The idea behind this is to limit the amount of DOM traversals and reflows when multiple re-definitions happen in a short timeframe (typical HMR use-case).
+
+### Configure buffering to limit the amount of re-rendering
+
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
 // if you want to customize...
 applyPolyfill(
-    /* enable autoReflow */  true, 
-    /* buffer changes for 150ms */ 150, 
-    /* called for every web component code change (no buffer) */ 
+    // replaces matching web component elements with a new clone of the previous element
+    // and calls all lifecycle methods like the web standard suggests (default)
+    ReflowStrategy.REPLACE_BY_CLONE,
+    /* buffers changes for 500ms */ 500, 
+    /* gets called for every re-definition of a web component */
+    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+
+        console.log('[Web Component code change] ', elementName, impl, options);
+    }    
+);
+```
+### Change the reflow strategy
+
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+
+// if you want to customize...
+applyPolyfill(
+    // resets the body's innerHTML, thus rerenders all elements
+    // but doesn't call all lifecycle methods in a standard way (less calls)
+    ReflowStrategy.RERENDER_INNER_HTML,
+    /* buffers changes for 100ms */ 100, 
+    /* gets called for every re-definition of a web component */
     (elementName: string, impl: any, options: ElementDefinitionOptions) => {
 
         console.log('[Web Component code change] ', elementName, impl, options);
@@ -35,8 +66,25 @@ applyPolyfill(
 );
 ```
 
-As you can see, the `autoReflow` can be buffered as well by setting `reflowBufferMs` in milliseconds. 
-The idea behind this is to limit the amount of DOM traversals and reflows when multiple re-definitions happen in a short timeframe (typical HMR use-case).
+### Use a custom re-render strategy
+
+```ts
+import { applyPolyfill, ReflowStrategy, reflowInnerHTML } from 'custom-elements-hmr-polyfill';
+
+// if you want to customize...
+applyPolyfill(
+    /* no reflowing */ ReflowStrategy.NONE,
+    /* ignored, because reflowing is disabled */ -1, 
+    /* gets called for every re-definition of a web component */
+    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+
+        // manually reflow using reflowInnerHTML strategy without any buffering
+        reflowInnerHTML();
+
+        console.log('And do something more...');
+    }    
+);
+```
 
 ## Browser Support
 

@@ -1,8 +1,10 @@
 import { CustomElementChangeListener } from './onCustomElementChange';
-import { reflowDOM } from '../utils/reflowDOM';
+import { replaceByClone } from '../reflow-strategy/replaceByClone';
+import { ReflowStrategy } from './reflowStrategy';
+import { rerenderInnerHTML } from '../reflow-strategy/rerenderInnerHTML';
 
 export const createHookElementChangeListener = (
-    autoReflow: boolean = true,
+    reflowStrategy: ReflowStrategy = ReflowStrategy.REPLACE_BY_CLONE,
     reflowDelayMs: number = 250,
     onCustomElementChangeListener?: CustomElementChangeListener
 ): CustomElementChangeListener => {
@@ -16,14 +18,23 @@ export const createHookElementChangeListener = (
     return (elementName: string, impl: any, options: ElementDefinitionOptions) => {
         onCustomElementChangeListener!(elementName, impl, options);
 
-        if (autoReflow) {
+        if (reflowStrategy && reflowStrategy !== ReflowStrategy.NONE) {
             elementsChanged.push(elementName);
 
             clearTimeout(timer);
 
             setTimeout(() => {
-                reflowDOM(elementsChanged);
+                switch (reflowStrategy) {
+                    case ReflowStrategy.REPLACE_BY_CLONE:
+                        console.log('replace');
+                        replaceByClone(elementsChanged);
+                        break;
 
+                    case ReflowStrategy.RERENDER_INNER_HTML:
+                        console.log('inner');
+                        rerenderInnerHTML();
+                        break;
+                }
                 elementsChanged = [];
             }, reflowDelayMs);
         }
