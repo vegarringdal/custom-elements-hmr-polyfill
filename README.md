@@ -69,7 +69,7 @@ applyPolyfill(
 ### Use a custom re-render strategy
 
 ```ts
-import { applyPolyfill, ReflowStrategy, reflowInnerHTML } from 'custom-elements-hmr-polyfill';
+import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-elements-hmr-polyfill';
 
 // if you want to customize...
 applyPolyfill(
@@ -78,8 +78,8 @@ applyPolyfill(
     /* gets called for every re-definition of a web component */
     (elementName: string, impl: any, options: ElementDefinitionOptions) => {
 
-        // manually reflow using reflowInnerHTML strategy without any buffering
-        reflowInnerHTML();
+        // manually reflow using rerenderInnerHTML strategy without any buffering
+        rerenderInnerHTML();
 
         console.log('And do something more...');
     }    
