@@ -1,6 +1,6 @@
 {
   "name": "custom-elements-hmr-polyfill",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-beta.1",
   "description": "Custom Elements HMR polyfill",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
