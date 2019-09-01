@@ -22,10 +22,22 @@ Once a Web Component gets re-defined, the DOM tree is traversed and all instance
 ```ts
 import { applyPolyfill } from 'custom-elements-hmr-polyfill';
 
-// to auto-reflow on changes, buffered, all 250ms, just run
+// no auto-reflow (web components won't update)
 applyPolyfill();
 ```
 
+### Activating auto-reflow
+
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+
+applyPolyfill(
+    // resets the body's innerHTML, thus rerenders all elements
+    // but doesn't call all lifecycle methods in a standard way (less calls)
+    ReflowStrategy.RERENDER_INNER_HTML,
+    /* buffers changes for 500ms */ 500
+);
+```
 ### Changing the buffer time
 
 ```ts
@@ -38,19 +50,8 @@ applyPolyfill(
     /* buffers changes for 500ms */ 500
 );
 ```
-### Disabling auto-reflow
 
-```ts
-import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
-
-applyPolyfill(
-    // no auto-reflow
-    ReflowStrategy.NONE,
-    /* buffers changes for 100ms */ 100
-);
-```
-
-### Use a custom re-render strategy
+### Using a custom re-render strategy
 
 ```ts
 import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-elements-hmr-polyfill';
@@ -58,7 +59,7 @@ import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-element
 // if you want to customize...
 applyPolyfill(
     /* no auto-reflow */ ReflowStrategy.NONE,
-    /* ignored, because reflowing is disabled */ -1, 
+    /* ignored, because reflowing is disabled */ 0, 
     /* gets called for every re-definition of a web component */
     (elementName: string, impl: any, options: ElementDefinitionOptions) => {
 
