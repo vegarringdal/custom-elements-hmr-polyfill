@@ -26,12 +26,10 @@ export const createHookElementChangeListener = (
             setTimeout(() => {
                 switch (reflowStrategy) {
                     case ReflowStrategy.REPLACE_BY_CLONE:
-                        console.log('replace');
                         replaceByClone(elementsChanged);
                         break;
 
                     case ReflowStrategy.RERENDER_INNER_HTML:
-                        console.log('inner');
                         rerenderInnerHTML();
                         break;
                 }

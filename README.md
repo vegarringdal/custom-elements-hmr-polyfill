@@ -26,9 +26,6 @@ import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 applyPolyfill();
 ```
 
-As you can see, the `autoReflow` can be buffered as well by setting `reflowBufferMs` in milliseconds. 
-The idea behind this is to limit the amount of DOM traversals and reflows when multiple re-definitions happen in a short timeframe (typical HMR use-case).
-
 ### Configure buffering to limit the amount of re-rendering
 
 ```ts

@@ -14,8 +14,6 @@ const visit = (node: Node, elementNames?: Array<string> | undefined) => {
         // - element name filter matches childNode's element name
         if (!elementNames || elementNames.indexOf(childNode.nodeName.toUpperCase()) > -1) {
             recreateNode(childNode);
-
-            console.log('node re-creation for', childNode.nodeName, childNode);
             recreatedNode = true;
         }
 
