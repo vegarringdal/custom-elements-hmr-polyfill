@@ -56,7 +56,6 @@ applyPolyfill(
 ```ts
 import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-elements-hmr-polyfill';
 
-// if you want to customize...
 applyPolyfill(
     /* no auto-reflow */ ReflowStrategy.NONE,
     /* ignored, because reflowing is disabled */ 0, 
@@ -86,7 +85,7 @@ None. This polyfill is 100% web standard compliant.
 
 For reference see: [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
 
-### Distribution formats
+## Distribution formats
 
 The bundled npm package contains the following formats:
 - IIFE (`.iife.js`)
