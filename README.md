@@ -7,7 +7,7 @@ At the time of the creation of this readme, the API `customElements.define(...)`
 
 - [Codesandbox](https://codesandbox.io/s/custom-elements-hmr-polyfill-4vd3o)
 
-## How to install?
+## How to install it?
 
 - `npm install custom-elements-hmr-polyfill`
 
@@ -99,15 +99,35 @@ Polyfills for these API's must be applied *before* you apply this polyfill.
 
 None. This polyfill is 100% web standard compliant. 
 
-The previously existing limitation of `observedAttributes` being immutable has been polyfilled using a `MutationObserver` lately. 
-
 For reference see: [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
+
+### Distribution formats
+
+The bundled npm package contains the following formats:
+- IIFE (`.iife.js`)
+- AMD (`.amd.js`)
+- Common JS (`.cjs.js`)
+- ES Module (`.mjs`)
+- SystemJS (`.system.js`)
+- UMD (`.umd.js`)
+
+You can find single file outputs in `dist/custom-elements-hmr-polyfill.*`, i.e. `dist/custom-elements-hmr-polyfill.iife.js`.
+
+Furthermore, multiple file outputs are available in `dist/*/**/*.js`. i.e. `dist/AMD/**/*.js`.
+- `AMD`
+- `CommonJS`
+- `ES6`
+- `ES2015`
+- `ESNext`
+- `System`
+- `UMD`
 
 ## Advanced: How to start the sample code (of this repo)?
 
 - `npm run bootstrap`
 - `npm start`
 
-## How to build a dist version of this polyfill?
+## How to transpile and bundle this polyfill on your own?
 
+- `npm run bootstrap`
 - `npm build`

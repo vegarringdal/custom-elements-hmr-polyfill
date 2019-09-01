@@ -2,14 +2,16 @@
   "name": "custom-elements-hmr-polyfill",
   "version": "1.0.0-beta.1",
   "description": "Custom Elements HMR polyfill",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/CommonJS/index.js",
+  "module": "dist/ES6/index.js",
+  "typings": "dist/CommonJS/index.d.ts",
   "scripts": {
     "prebootstrap": "npx st-rm-rf ./node_modules package-lock.json",
     "bootstrap": "npm i",
     "start": "node fuse",
     "watch": "node fuse",
-    "build": "node ./node_modules/typescript/bin/tsc --build ./tsconfig-build.json",
+    "build": "node fuse build && npm run rollup",
+    "rollup": "./node_modules/.bin/rollup -c",
     "test": "todo"
   },
   "repository": {
@@ -28,6 +30,8 @@
     "husky": "^3.0.4",
     "lint-staged": "^9.2.3",
     "prettier": "^1.18.2",
+    "rollup": "^1.20.3",
+    "rollup-plugin-terser": "^5.1.1",
     "tslib": "^1.10.0",
     "typescript": "^3.5.3"
   },
