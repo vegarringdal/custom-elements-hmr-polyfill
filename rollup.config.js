@@ -32,7 +32,7 @@ export default [
         input: 'dist/ES6/index.js',
         output: {
             name: 'customElementsHmrPolyfill',
-            file: './dist/custom-elements-hmr-pollyfill-iife.js',
+            file: './dist/custom-elements-hmr-pollyfill.iife.js',
             format: 'iife',
             sourcemap: true
         },
