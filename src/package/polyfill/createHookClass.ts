@@ -7,27 +7,26 @@ export function createHookClass(elementName: string, originalImpl: any) {
         }
 
         connectedCallback() {
-            const mostRecentImpl = getMostRecentImpl(elementName).prototype;
+            const Impl = getMostRecentImpl(elementName);
+            const mostRecentImpl = Impl.prototype;
+            const attributes: string[] = Impl[getSymbolAttributes(elementName)];
 
             const observerOptions = {
                 childList: false,
                 attributes: true,
+                attributeOldValue: true,
                 subtree: false
             };
 
             const callback = (mutationList: any[], observer: MutationObserver) => {
                 mutationList.forEach(mutation => {
-                    const Impl = getMostRecentImpl(elementName);
-                    const ImplProto = Impl.prototype;
-                    const attributes = Impl[getSymbolAttributes(elementName)];
-
                     if (
-                        ImplProto.attributeChangedCallback &&
+                        mostRecentImpl.attributeChangedCallback &&
                         attributes &&
                         attributes.indexOf(mutation.attributeName) !== -1
                     ) {
                         // call back
-                        ImplProto.attributeChangedCallback.apply(this, [
+                        mostRecentImpl.attributeChangedCallback.apply(this, [
                             mutation.attributeName,
                             mutation.oldValue,
                             mutation.target.getAttribute(mutation.attributeName)
@@ -35,6 +34,15 @@ export function createHookClass(elementName: string, originalImpl: any) {
                     }
                 });
             };
+
+            // call initial callback when class is created
+            attributes.forEach(attributeName => {
+                mostRecentImpl.attributeChangedCallback.apply(this, [
+                    attributeName,
+                    null,
+                    this.getAttribute(attributeName)
+                ]);
+            });
 
             // create and observe
             (<any>this)[getSymbolObserver(elementName)] = new MutationObserver(callback);
