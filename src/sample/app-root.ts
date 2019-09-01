@@ -15,7 +15,7 @@ export class ElementX extends HTMLElement {
             const myFirstComp = this.querySelector('my-comp');
 
             if (myFirstComp) {
-                myFirstComp.setAttribute('some-attribute', 'foo-mutated1');
+                myFirstComp.setAttribute('some-attribute', 'foo-mutated');
             }
         }, 250);
     }

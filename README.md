@@ -20,46 +20,33 @@ Once a Web Component gets re-defined, the DOM tree is traversed and all instance
 ### Most simple integration
 
 ```ts
-import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+import { applyPolyfill } from 'custom-elements-hmr-polyfill';
 
 // to auto-reflow on changes, buffered, all 250ms, just run
 applyPolyfill();
 ```
 
-### Configure buffering to limit the amount of re-rendering
+### Changing the buffer time
 
 ```ts
 import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
-// if you want to customize...
-applyPolyfill(
-    // replaces matching web component elements with a new clone of the previous element
-    // and calls all lifecycle methods like the web standard suggests (default)
-    ReflowStrategy.REPLACE_BY_CLONE,
-    /* buffers changes for 500ms */ 500, 
-    /* gets called for every re-definition of a web component */
-    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
-
-        console.log('[Web Component code change] ', elementName, impl, options);
-    }    
-);
-```
-### Change the reflow strategy
-
-```ts
-import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
-
-// if you want to customize...
 applyPolyfill(
     // resets the body's innerHTML, thus rerenders all elements
     // but doesn't call all lifecycle methods in a standard way (less calls)
     ReflowStrategy.RERENDER_INNER_HTML,
-    /* buffers changes for 100ms */ 100, 
-    /* gets called for every re-definition of a web component */
-    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+    /* buffers changes for 500ms */ 500
+);
+```
+### Disabling auto-reflow
 
-        console.log('[Web Component code change] ', elementName, impl, options);
-    }    
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+
+applyPolyfill(
+    // no auto-reflow
+    ReflowStrategy.NONE,
+    /* buffers changes for 100ms */ 100
 );
 ```
 
@@ -70,7 +57,7 @@ import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-element
 
 // if you want to customize...
 applyPolyfill(
-    /* no reflowing */ ReflowStrategy.NONE,
+    /* no auto-reflow */ ReflowStrategy.NONE,
     /* ignored, because reflowing is disabled */ -1, 
     /* gets called for every re-definition of a web component */
     (elementName: string, impl: any, options: ElementDefinitionOptions) => {

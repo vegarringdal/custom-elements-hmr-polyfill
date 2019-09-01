@@ -2,7 +2,7 @@ import { defineCustomElement } from './decorator/defineCustomElement';
 
 @defineCustomElement('my-comp')
 export default class extends HTMLElement {
-    'some-attribute': string = 'foo';
+    'some-attribute': string;
 
     constructor() {
         super();

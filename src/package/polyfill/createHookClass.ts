@@ -18,7 +18,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
                 subtree: false
             };
 
-            const callback = (mutationList: any[], observer: MutationObserver) => {
+            const callback = (mutationList: any[]) => {
                 mutationList.forEach(mutation => {
                     if (
                         mostRecentImpl.attributeChangedCallback &&
