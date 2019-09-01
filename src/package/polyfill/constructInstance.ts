@@ -11,7 +11,7 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
     // This patch loop makes sure that the hook methods aren't overridden,
     // the constructor stays intact but methods, getters, setters and fields
     // are updated according to the most recent implementation:
-    const customElementInstance = Reflect.construct(mostRecentImpl, args, newTarget);
+
     const ownPropertyNames = Object.getOwnPropertyNames(mostRecentImpl.prototype);
 
     const whitelistedPropertyNames = ownPropertyNames.filter((propertyName: string) => {
@@ -25,12 +25,22 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
         );
 
         if (propertyDescriptor) {
-            Object.defineProperty(
-                customElementInstance,
-                whitelistedPropertyNames[i],
-                propertyDescriptor
-            );
+            if (propertyDescriptor.configurable) {
+                Object.defineProperty(
+                    newTarget.prototype,
+                    whitelistedPropertyNames[i],
+                    propertyDescriptor
+                );
+            } else {
+                console.warn(
+                    '[custom-element-hmr-polyfill]',
+                    `${whitelistedPropertyNames[i]} is not configurable, skipping`
+                );
+            }
         }
     }
+
+    const customElementInstance = Reflect.construct(mostRecentImpl, args, newTarget);
+
     return customElementInstance;
 }
