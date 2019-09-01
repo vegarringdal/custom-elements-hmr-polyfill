@@ -48,6 +48,8 @@ const build = (target) => {
                 module: target,
                 lib: ['es2017', 'dom'],
                 emitDecoratorMetadata: true,
+                sourceMap: true,
+                declaration: true,
                 importHelpers: true,
                 experimentalDecorators: true
             },
