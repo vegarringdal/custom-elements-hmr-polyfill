@@ -25,11 +25,18 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
         );
 
         if (propertyDescriptor) {
-            Object.defineProperty(
-                newTarget.prototype,
-                whitelistedPropertyNames[i],
-                propertyDescriptor
-            );
+            if (propertyDescriptor.configurable) {
+                Object.defineProperty(
+                    newTarget.prototype,
+                    whitelistedPropertyNames[i],
+                    propertyDescriptor
+                );
+            } else {
+                console.warn(
+                    '[custom-element-hmr-polyfill]',
+                    `${whitelistedPropertyNames[i]} is not configurable, skipping`
+                );
+            }
         }
     }
 
