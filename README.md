@@ -20,58 +20,45 @@ Once a Web Component gets re-defined, the DOM tree is traversed and all instance
 ### Most simple integration
 
 ```ts
-import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+import { applyPolyfill } from 'custom-elements-hmr-polyfill';
 
-// to auto-reflow on changes, buffered, all 250ms, just run
+// no auto-reflow (web components won't update)
 applyPolyfill();
 ```
 
-### Configure buffering to limit the amount of re-rendering
+### Activating auto-reflow
 
 ```ts
 import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
 
-// if you want to customize...
-applyPolyfill(
-    // replaces matching web component elements with a new clone of the previous element
-    // and calls all lifecycle methods like the web standard suggests (default)
-    ReflowStrategy.REPLACE_BY_CLONE,
-    /* buffers changes for 500ms */ 500, 
-    /* gets called for every re-definition of a web component */
-    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
-
-        console.log('[Web Component code change] ', elementName, impl, options);
-    }    
-);
-```
-### Change the reflow strategy
-
-```ts
-import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
-
-// if you want to customize...
 applyPolyfill(
     // resets the body's innerHTML, thus rerenders all elements
     // but doesn't call all lifecycle methods in a standard way (less calls)
     ReflowStrategy.RERENDER_INNER_HTML,
-    /* buffers changes for 100ms */ 100, 
-    /* gets called for every re-definition of a web component */
-    (elementName: string, impl: any, options: ElementDefinitionOptions) => {
+    /* buffers changes for 500ms */ 500
+);
+```
+### Changing the buffer time
 
-        console.log('[Web Component code change] ', elementName, impl, options);
-    }    
+```ts
+import { applyPolyfill, ReflowStrategy } from 'custom-elements-hmr-polyfill';
+
+applyPolyfill(
+    // resets the body's innerHTML, thus rerenders all elements
+    // but doesn't call all lifecycle methods in a standard way (less calls)
+    ReflowStrategy.RERENDER_INNER_HTML,
+    /* buffers changes for 500ms */ 500
 );
 ```
 
-### Use a custom re-render strategy
+### Using a custom re-render strategy
 
 ```ts
 import { applyPolyfill, ReflowStrategy, rerenderInnerHTML } from 'custom-elements-hmr-polyfill';
 
-// if you want to customize...
 applyPolyfill(
-    /* no reflowing */ ReflowStrategy.NONE,
-    /* ignored, because reflowing is disabled */ -1, 
+    /* no auto-reflow */ ReflowStrategy.NONE,
+    /* ignored, because reflowing is disabled */ 0, 
     /* gets called for every re-definition of a web component */
     (elementName: string, impl: any, options: ElementDefinitionOptions) => {
 
@@ -98,7 +85,7 @@ None. This polyfill is 100% web standard compliant.
 
 For reference see: [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
 
-### Distribution formats
+## Distribution formats
 
 The bundled npm package contains the following formats:
 - IIFE (`.iife.js`)

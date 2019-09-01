@@ -5,7 +5,7 @@ import { createHookElementChangeListener } from './createHookElementChangeListen
 import { ReflowStrategy } from './reflowStrategy';
 
 export function applyPolyfill(
-    reflowStrategy: ReflowStrategy = ReflowStrategy.REPLACE_BY_CLONE,
+    reflowStrategy: ReflowStrategy = ReflowStrategy.NONE,
     reflowDelayMs: number = 250,
     onCustomElementChangeListener?: CustomElementChangeListener
 ) {

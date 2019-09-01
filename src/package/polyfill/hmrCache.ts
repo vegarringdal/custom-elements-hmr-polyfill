@@ -1,8 +1,8 @@
 export function initCache() {
     if (!(<any>globalThis).hmrCache) {
         (<any>globalThis).hmrCache = {};
-        (<any>globalThis).symbolAttributes = {};
-        (<any>globalThis).symbolObserver = {};
+        (<any>globalThis).hmrCacheSymbolAttributes = {};
+        (<any>globalThis).hmrCacheSymbolObserver = {};
     }
 }
 
@@ -23,19 +23,21 @@ export function setCacheAsInitialized() {
 }
 
 export function getSymbolAttributes(elementName: string) {
-    if (!(<any>globalThis).symbolAttributes[elementName]) {
-        (<any>globalThis).symbolAttributes[elementName] = Symbol('observedAttributesArray');
-        return (<any>globalThis).symbolAttributes[elementName];
+    if (!(<any>globalThis).hmrCacheSymbolAttributes[elementName]) {
+        (<any>globalThis).hmrCacheSymbolAttributes[elementName] = Symbol('observedAttributesArray');
+        return (<any>globalThis).hmrCacheSymbolAttributes[elementName];
     } else {
-        return (<any>globalThis).symbolAttributes[elementName];
+        return (<any>globalThis).hmrCacheSymbolAttributes[elementName];
     }
 }
 
 export function getSymbolObserver(elementName: string) {
-    if (!(<any>globalThis).symbolObserver[elementName]) {
-        (<any>globalThis).symbolObserver[elementName] = Symbol('observedAttributesObserver');
-        return (<any>globalThis).symbolObserver[elementName];
+    if (!(<any>globalThis).hmrCacheSymbolObserver[elementName]) {
+        (<any>globalThis).hmrCacheSymbolObserver[elementName] = Symbol(
+            'observedAttributesObserver'
+        );
+        return (<any>globalThis).hmrCacheSymbolObserver[elementName];
     } else {
-        return (<any>globalThis).symbolObserver[elementName];
+        return (<any>globalThis).hmrCacheSymbolObserver[elementName];
     }
 }

@@ -1,5 +1,5 @@
 const { fusebox, sparky } = require('fuse-box');
-const { pluginTypeChecker, TypeChecker } = require('fuse-box-typechecker');
+const { pluginTypeChecker } = require('fuse-box-typechecker');
 
 class Context {
     getConfig() {
@@ -64,7 +64,7 @@ const build = (target) => {
     checker.printOnly(result);
     
     console.log(`  -> Emitting js`);
-    const x = result.oldProgram.emit();
+    result.oldProgram.emit();
 };
 
 task('build', async ctx => {
