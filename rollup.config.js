@@ -5,7 +5,8 @@ export default [
         input: 'dist/ES6/index.js',
         output: {
             file: './dist/custom-elements-hmr-pollyfill.system.js',
-            format: 'system'
+            format: 'system',
+            sourcemap: true
         },
         plugins: [terser()]
     },
@@ -13,7 +14,8 @@ export default [
         input: 'dist/ES6/index.js',
         output: {
             file: './dist/custom-elements-hmr-pollyfill.amd.js',
-            format: 'amd'
+            format: 'amd',
+            sourcemap: true
         },
         plugins: [terser()]
     },
@@ -21,7 +23,8 @@ export default [
         input: 'dist/ES6/index.js',
         output: {
             file: './dist/custom-elements-hmr-pollyfill.cjs.js',
-            format: 'cjs'
+            format: 'cjs',
+            sourcemap: true
         },
         plugins: [terser()]
     },
@@ -30,7 +33,8 @@ export default [
         output: {
             name: 'customElementsHmrPolyfill',
             file: './dist/custom-elements-hmr-pollyfill-iife.js',
-            format: 'iife'
+            format: 'iife',
+            sourcemap: true
         },
         plugins: [terser()]
     },
@@ -39,7 +43,8 @@ export default [
         output: {
           name: 'customElementsHmrPolyfill',
             file: './dist/custom-elements-hmr-pollyfill.umd.js',
-            format: 'umd'
+            format: 'umd',
+            sourcemap: true
         },
         plugins: [terser()]
     },
@@ -47,7 +52,8 @@ export default [
         input: 'dist/ES6/index.js',
         output: {
             file: './dist/custom-elements-hmr-pollyfill.mjs',
-            format: 'esm'
+            format: 'esm',
+            sourcemap: true
         },
         plugins: [terser()]
     }
