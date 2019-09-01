@@ -1,6 +1,6 @@
 const recreateNode = (node: Node) => {
     if (node.parentNode) {
-        node.parentNode.replaceChild(node.cloneNode(true), node);
+        node.parentNode.replaceChild(node.cloneNode(), node);
     }
 };
 

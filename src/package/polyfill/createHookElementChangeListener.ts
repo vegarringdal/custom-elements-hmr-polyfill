@@ -23,7 +23,7 @@ export const createHookElementChangeListener = (
 
             clearTimeout(timer);
 
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 switch (reflowStrategy) {
                     case ReflowStrategy.REPLACE_BY_CLONE:
                         replaceByClone(elementsChanged);
