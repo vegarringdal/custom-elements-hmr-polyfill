@@ -36,13 +36,15 @@ export function createHookClass(elementName: string, originalImpl: any) {
             };
 
             // call initial callback when class is created
-            attributes.forEach(attributeName => {
-                mostRecentImpl.attributeChangedCallback.apply(this, [
-                    attributeName,
-                    null,
-                    this.getAttribute(attributeName)
-                ]);
-            });
+            if (attributes) {
+                attributes.forEach(attributeName => {
+                    mostRecentImpl.attributeChangedCallback.apply(this, [
+                        attributeName,
+                        null,
+                        this.getAttribute(attributeName)
+                    ]);
+                });
+            }
 
             // create and observe
             (<any>this)[getSymbolObserver(elementName)] = new MutationObserver(callback);
