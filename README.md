@@ -1,6 +1,9 @@
 # custom-elements-hmr-polyfill
 > 100% standard-compliant polyfill to allow WebComponent re-definition at runtime (used for HMR) 
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/vegarringdal/custom-elements-hmr-polyfill.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vegarringdal/custom-elements-hmr-polyfill/alerts/)
+
+
 At the time of the creation of this readme, the API `customElements.define(...)` doesn't allow to re-define a Web Component with the same tag name but a different implementation. This limitation [made it impossible to do Hot Module Replacement (HMR) with standard Web Components](https://github.com/w3c/webcomponents/issues/829). - until today. 
 
 ## Live Demo
