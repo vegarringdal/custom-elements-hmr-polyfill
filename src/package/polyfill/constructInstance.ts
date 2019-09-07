@@ -1,4 +1,4 @@
-export const BLACKLISTED_PATCH_METHODS = [
+export const BLACKLISTED_PROTOTYPE_PATCH_METHODS = [
     'constructor',
     'connectedCallback',
     'disconnectedCallback',
@@ -12,25 +12,53 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
     // the constructor stays intact but methods, getters, setters and fields
     // are updated according to the most recent implementation:
 
-    const ownPropertyNames = Object.getOwnPropertyNames(mostRecentImpl.prototype);
+    const prototypePropertyNames = Object.getOwnPropertyNames(mostRecentImpl.prototype);
 
-    const whitelistedPropertyNames = ownPropertyNames.filter((propertyName: string) => {
-        return BLACKLISTED_PATCH_METHODS.indexOf(propertyName) === -1;
-    });
+    const whitelistedPrototypePropertyNames = prototypePropertyNames.filter(
+        (propertyName: string) => {
+            return BLACKLISTED_PROTOTYPE_PATCH_METHODS.indexOf(propertyName) === -1;
+        }
+    );
 
-    for (let i = 0; i < whitelistedPropertyNames.length; i++) {
+    for (let i = 0; i < whitelistedPrototypePropertyNames.length; i++) {
         const propertyDescriptor = Object.getOwnPropertyDescriptor(
             mostRecentImpl.prototype,
-            whitelistedPropertyNames[i]
+            whitelistedPrototypePropertyNames[i]
         );
 
         if (propertyDescriptor) {
             if (propertyDescriptor.configurable) {
                 Object.defineProperty(
                     newTarget.prototype,
-                    whitelistedPropertyNames[i],
+                    whitelistedPrototypePropertyNames[i],
                     propertyDescriptor
                 );
+            } else {
+                console.warn(
+                    '[custom-element-hmr-polyfill]',
+                    `${whitelistedPrototypePropertyNames[i]} is not configurable, skipping`
+                );
+            }
+        }
+    }
+
+    // here we will update static variables/methods
+
+    const ownPropertyNames = Object.getOwnPropertyNames(mostRecentImpl);
+
+    const whitelistedPropertyNames = ownPropertyNames.filter((propertyName: string) => {
+        return ['name', 'prototype', 'length'].indexOf(propertyName) === -1;
+    });
+
+    for (let i = 0; i < whitelistedPropertyNames.length; i++) {
+        const propertyDescriptor = Object.getOwnPropertyDescriptor(
+            mostRecentImpl,
+            whitelistedPropertyNames[i]
+        );
+
+        if (propertyDescriptor) {
+            if (propertyDescriptor.configurable) {
+                Object.defineProperty(newTarget, whitelistedPropertyNames[i], propertyDescriptor);
             } else {
                 console.warn(
                     '[custom-element-hmr-polyfill]',
