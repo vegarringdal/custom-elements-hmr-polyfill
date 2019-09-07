@@ -6,7 +6,6 @@ export class ElementX extends HTMLElement {
 
     constructor() {
         super();
-        this.coolio = 'wosssw';
         console.log('[app-root] Change me on-the-fly and be surprised! :)');
     }
 
