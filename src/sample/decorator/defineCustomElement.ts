@@ -10,3 +10,31 @@ export function defineCustomElement(
         }
     };
 }
+
+export function customElementExtended(elementName: any) {
+    return function reg(elementClass: any) {
+        const base = class extends elementClass {
+            constructor() {
+                super();
+            }
+
+            connectedCallback() {
+                if (super.connectedCallback) {
+                    super.connectedCallback.call(this);
+                }
+            }
+            disconnectedCallback() {
+                if (super.disconnectedCallback) {
+                    super.disconnectedCallback.call(this);
+                }
+            }
+            attributeChangedCallback(name: any, oldValue: any, newValue: any) {
+                if (super.attributeChangedCallback) {
+                    super.attributeChangedCallback.call(this, name, oldValue, newValue);
+                }
+            }
+        };
+
+        customElements.define(elementName, base);
+    };
+}
