@@ -11,7 +11,10 @@ export function defineCustomElement(
     };
 }
 
-export function customElementExtended(elementName: any) {
+export function customElementExtended(
+    elementName: any,
+    elementDefinitionOptions?: ElementDefinitionOptions
+) {
     return function reg(elementClass: any) {
         const base = class extends elementClass {
             constructor() {
@@ -34,7 +37,10 @@ export function customElementExtended(elementName: any) {
                 }
             }
         };
-
-        customElements.define(elementName, base);
+        if (elementDefinitionOptions) {
+            customElements.define(elementName, base, elementDefinitionOptions);
+        } else {
+            customElements.define(elementName, base);
+        }
     };
 }
