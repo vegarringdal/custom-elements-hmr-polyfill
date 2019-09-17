@@ -37,13 +37,17 @@ export function createHookClass(elementName: string, originalImpl: any) {
 
             // call initial callback when class is created
             if (attributes) {
-                attributes.forEach(attributeName => {
-                    mostRecentImpl.attributeChangedCallback.apply(this, [
-                        attributeName,
-                        null,
-                        this.getAttribute(attributeName)
-                    ]);
-                });
+                if (Array.isArray(attributes)) {
+                    attributes.forEach(attributeName => {
+                        mostRecentImpl.attributeChangedCallback.apply(this, [
+                            attributeName,
+                            null,
+                            this.getAttribute(attributeName)
+                        ]);
+                    });
+                } else {
+                    console.warn(`observedAttributes in ${elementName} is not array, please fix`);
+                }
             }
 
             // create and observe
