@@ -27,9 +27,12 @@ export default class extends HTMLElement {
     }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        console.log('[my-comp] attribute changed', ...arguments);
-        this['some-attribute'] = newValue;
-        this.innerHTML = this.render();
+        const args = arguments;
+        setTimeout(() => {
+            console.log('[my-comp] attribute changed', ...args);
+            this['some-attribute'] = newValue;
+            this.innerHTML = this.render();
+        }, 1000);
     }
 
     render() {
