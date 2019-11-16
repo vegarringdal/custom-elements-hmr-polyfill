@@ -1,6 +1,6 @@
 {
   "name": "custom-elements-hmr-polyfill",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0",
   "description": "Custom Elements HMR polyfill",
   "main": "dist/CommonJS/index.js",
   "module": "dist/ES6/index.js",
@@ -25,15 +25,15 @@
   },
   "homepage": "https://github.com/vegarringdal/custom-elements-hmr-polyfill#readme",
   "devDependencies": {
-    "fuse-box": "^4.0.0-next.134",
+    "fuse-box": "next",
     "fuse-box-typechecker": "^3.0.0-next.29",
-    "husky": "^3.0.5",
-    "lint-staged": "^9.2.5",
-    "prettier": "^1.18.2",
-    "rollup": "^1.21.3",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.3",
+    "prettier": "^1.19.1",
+    "rollup": "^1.27.0",
     "rollup-plugin-terser": "^5.1.2",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.2"
   },
   "husky": {
     "hooks": {

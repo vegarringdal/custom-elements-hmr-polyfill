@@ -1,19 +1,18 @@
 import { patch } from './patch';
 export const BLACKLISTED_PROTOTYPE_PATCH_METHODS = [
+    /*
+    // we dont need these anymore...
     'constructor',
     'connectedCallback',
     'disconnectedCallback',
     'adoptedCallback',
-    'attributeChangedCallback'
+    'attributeChangedCallback'  */
 ];
 
 export const BLACKLISTED_STATIC_PATCH_METHODS = ['name', 'prototype', 'length'];
 
 export function constructInstance(mostRecentImpl: any, args: any, newTarget: any) {
-    // Constructed instance partly points to outdated impl details.
-    // This patch loop makes sure that the hook methods aren't overridden,
-    // the constructor stays intact but methods, getters, setters and fields
-    // are updated according to the most recent implementation:
+    // Constructed instance points to outdated impl details.
 
     // PROTO check
     let check: any = window[mostRecentImpl.__proto__.name];
