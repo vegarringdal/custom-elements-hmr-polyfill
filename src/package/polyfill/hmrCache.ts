@@ -1,43 +1,45 @@
 export function initCache() {
-    if (!(<any>globalThis).hmrCache) {
-        (<any>globalThis).hmrCache = {};
-        (<any>globalThis).hmrCacheSymbolAttributes = {};
-        (<any>globalThis).hmrCacheSymbolObserver = {};
+    if (!(globalThis as any).hmrCache) {
+        (globalThis as any).hmrCache = {};
+        (globalThis as any).hmrCacheSymbolAttributes = {};
+        (globalThis as any).hmrCacheSymbolObserver = {};
     }
 }
 
 export function getMostRecentImpl(elementName: string) {
-    return (<any>globalThis).hmrCache[elementName];
+    return (globalThis as any).hmrCache[elementName];
 }
 
 export function setMostRecentImpl(elementName: string, impl: any) {
-    (<any>globalThis).hmrCache[elementName] = impl;
+    (globalThis as any).hmrCache[elementName] = impl;
 }
 
 export function isCacheInitialized() {
-    return (<any>globalThis).hmrCache.initialized;
+    return (globalThis as any).hmrCache.initialized;
 }
 
 export function setCacheAsInitialized() {
-    (<any>globalThis).hmrCache.initialized = true;
+    (globalThis as any).hmrCache.initialized = true;
 }
 
 export function getSymbolAttributes(elementName: string) {
-    if (!(<any>globalThis).hmrCacheSymbolAttributes[elementName]) {
-        (<any>globalThis).hmrCacheSymbolAttributes[elementName] = Symbol('observedAttributesArray');
-        return (<any>globalThis).hmrCacheSymbolAttributes[elementName];
+    if (!(globalThis as any).hmrCacheSymbolAttributes[elementName]) {
+        (globalThis as any).hmrCacheSymbolAttributes[elementName] = Symbol(
+            'observedAttributesArray'
+        );
+        return (globalThis as any).hmrCacheSymbolAttributes[elementName];
     } else {
-        return (<any>globalThis).hmrCacheSymbolAttributes[elementName];
+        return (globalThis as any).hmrCacheSymbolAttributes[elementName];
     }
 }
 
 export function getSymbolObserver(elementName: string) {
-    if (!(<any>globalThis).hmrCacheSymbolObserver[elementName]) {
-        (<any>globalThis).hmrCacheSymbolObserver[elementName] = Symbol(
+    if (!(globalThis as any).hmrCacheSymbolObserver[elementName]) {
+        (globalThis as any).hmrCacheSymbolObserver[elementName] = Symbol(
             'observedAttributesObserver'
         );
-        return (<any>globalThis).hmrCacheSymbolObserver[elementName];
+        return (globalThis as any).hmrCacheSymbolObserver[elementName];
     } else {
-        return (<any>globalThis).hmrCacheSymbolObserver[elementName];
+        return (globalThis as any).hmrCacheSymbolObserver[elementName];
     }
 }

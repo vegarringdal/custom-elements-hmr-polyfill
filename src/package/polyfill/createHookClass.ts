@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 import { getMostRecentImpl, getSymbolAttributes, getSymbolObserver } from './hmrCache';
 
 export function createHookClass(elementName: string, originalImpl: any) {
@@ -51,8 +52,8 @@ export function createHookClass(elementName: string, originalImpl: any) {
             }
 
             // create and observe
-            (<any>this)[getSymbolObserver(elementName)] = new MutationObserver(callback);
-            (<any>this)[getSymbolObserver(elementName)].observe(
+            (this as any)[getSymbolObserver(elementName)] = new MutationObserver(callback);
+            (this as any)[getSymbolObserver(elementName)].observe(
                 (this as unknown) as Node,
                 observerOptions
             );
@@ -64,8 +65,8 @@ export function createHookClass(elementName: string, originalImpl: any) {
 
         disconnectedCallback() {
             // cleanup
-            (<any>this)[getSymbolObserver(elementName)].disconnect();
-            (<any>this)[getSymbolObserver(elementName)] = null;
+            (this as any)[getSymbolObserver(elementName)].disconnect();
+            (this as any)[getSymbolObserver(elementName)] = null;
 
             const mostRecentImpl = getMostRecentImpl(elementName).prototype;
             if (mostRecentImpl.disconnectedCallback) {
