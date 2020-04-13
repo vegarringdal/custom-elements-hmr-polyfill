@@ -2,6 +2,8 @@
   "recommendations": [
     "eamodio.gitlens",
     "pflannery.vscode-versionlens",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "github.vscode-pull-request-github",
+    "dbaeumer.vscode-eslint"
   ]
 }
