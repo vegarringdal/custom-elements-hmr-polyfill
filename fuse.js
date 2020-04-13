@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { fusebox, sparky } = require('fuse-box');
 const { pluginTypeChecker } = require('fuse-box-typechecker');
 
@@ -12,7 +13,7 @@ class Context {
                 publicPath: './'
             },
             cache: {
-                root: '.cache',
+                root: '.cache/sample',
                 enabled: true
             },
             watcher: {
@@ -30,11 +31,11 @@ class Context {
         });
     }
 }
-const { task } = sparky(Context);
+const { task, rm } = sparky(Context);
 
-task('default', async ctx => {
+task('default', async (ctx) => {
     const fuse = ctx.getConfig();
-    await fuse.runDev();
+    await fuse.runDev({ bundles: { distRoot: `.cache/dist`, app: 'app.js' } });
 });
 
 const build = (target) => {
@@ -47,27 +48,29 @@ const build = (target) => {
                 module: target,
                 lib: ['es2017', 'dom'],
                 emitDecoratorMetadata: true,
+                skipLibCheck: true,
                 sourceMap: true,
                 declaration: true,
                 importHelpers: true,
                 experimentalDecorators: true
             },
-            exclude: ['dist', 'node_modules', 'src/sample']
+            exclude: ['dist', 'node_modules', 'src/sample', 'src/__tests__']
         },
         basePath: `./`,
         name: `Building ${target}`
     });
 
     checker.printSettings();
-    let result = checker.inspectOnly();
+    const result = checker.inspectOnly();
     checker.printOnly(result);
-    
+
     console.log(`  -> Emitting js`);
     result.oldProgram.emit();
 };
 
-task('build', async ctx => {
-    ['CommonJS', 'AMD', 'System', 'UMD', 'ES6', 'ES2015', 'ESNext'].forEach(target => {
+task('build', async () => {
+    await rm('./dist');
+    ['CommonJS', 'AMD', 'System', 'UMD', 'ES6', 'ES2015', 'ESNext'].forEach((target) => {
         build(target);
     });
 });
