@@ -12,6 +12,7 @@
     "watch": "node fuse",
     "build": "node fuse build && npm run rollup",
     "rollup": "./node_modules/.bin/rollup -c",
+    "prettier:run": "node ./node_modules/prettier/bin-prettier --write \"src/**/*.{json,md,ts}\" ",
     "test": "todo"
   },
   "repository": {

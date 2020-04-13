@@ -19,7 +19,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
             };
 
             const callback = (mutationList: any[]) => {
-                mutationList.forEach(mutation => {
+                mutationList.forEach((mutation) => {
                     if (
                         mostRecentImpl.attributeChangedCallback &&
                         attributes &&
@@ -38,7 +38,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
             // call initial callback when class is created
             if (attributes) {
                 if (Array.isArray(attributes)) {
-                    attributes.forEach(attributeName => {
+                    attributes.forEach((attributeName) => {
                         mostRecentImpl.attributeChangedCallback.apply(this, [
                             attributeName,
                             null,
