@@ -16,7 +16,7 @@ export function customElementExtended(
     elementDefinitionOptions?: ElementDefinitionOptions
 ) {
     return function reg(elementClass: any) {
-        const base = class extends elementClass {
+        const base: any = class extends elementClass {
             constructor() {
                 super();
             }

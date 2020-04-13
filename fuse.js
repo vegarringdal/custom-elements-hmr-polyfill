@@ -6,21 +6,20 @@ class Context {
         return fusebox({
             target: 'browser',
             homeDir: './',
-            output: `dev`,
             entry: `src/sample/index.ts`,
             webIndex: {
-                template: `src/sample/index.html`
-            },
-            logging: { level: 'verbose' },
-            dependencies: {
-                include: ['tslib']
+                template: `src/sample/index.html`,
+                publicPath: './'
             },
             cache: {
                 root: '.cache',
                 enabled: true
             },
-            watch: { ignored: ['dist', 'dev'] },
-            hmr: true,
+            watcher: {
+                enabled: true,
+                include: ['./src']
+            },
+            hmr: { plugin: `./src/sample/fuseHmrPlugin.ts` },
             devServer: true,
             plugins: [
                 pluginTypeChecker({
