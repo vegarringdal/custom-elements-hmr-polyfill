@@ -19,7 +19,7 @@
         "typecheck": "node fuse typecheck-package",
         "test": "jest --verbose --env jest-environment-jsdom-sixteen",
         "test:watch": "jest --runInBand --watch --verbose --env jest-environment-jsdom-sixteen",
-        "testci": "jest --verbose --runInBand --env jest-environment-jsdom-sixteen && npm run typecheck && npm run eslint && codecov",
+        "testci": "jest --collectCoverage --verbose --runInBand --env jest-environment-jsdom-sixteen && npm run typecheck && npm run eslint && codecov",
         "test:coverage": "jest --collectCoverage --runInBand --verbose --env jest-environment-jsdom-sixteen"
     },
     "repository": {
