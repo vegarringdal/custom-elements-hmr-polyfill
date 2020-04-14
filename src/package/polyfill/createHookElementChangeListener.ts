@@ -11,11 +11,15 @@ export const createHookElementChangeListener = (
     let elementsChanged: Array<string> = [];
 
     if (!onCustomElementChangeListener) {
-        onCustomElementChangeListener = () => {};
+        onCustomElementChangeListener = () => {
+            /**nothing */
+        };
     }
 
     return (elementName: string, impl: any, options: ElementDefinitionOptions) => {
-        onCustomElementChangeListener!(elementName, impl, options);
+        if (onCustomElementChangeListener) {
+            onCustomElementChangeListener(elementName, impl, options);
+        }
 
         if (reflowStrategy && reflowStrategy === ReflowStrategy.RERENDER_INNER_HTML) {
             elementsChanged.push(elementName);

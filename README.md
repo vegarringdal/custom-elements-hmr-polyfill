@@ -74,12 +74,11 @@ applyPolyfill(
 
 ## Browser Support
 
-This polyfill requires support of the following browser API's (natively or polyfilled).
-- `Proxy` ([polyfill](https://github.com/GoogleChrome/proxy-polyfill))
-- `MutationObserver` ([polyfill](https://github.com/megawac/MutationObserver.js/tree/master))
-- `customElements` ([polyfill](https://github.com/webcomponents/polyfills/tree/master/packages/webcomponentsjs))
+This polyfill requires support of the following browser API's (natively).
+- `Proxy`
+- `MutationObserver`
+- `customElements`
 
-Polyfills for these API's must be applied *before* you apply this polyfill.
 
 ## Limitations
 

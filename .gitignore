@@ -3,3 +3,4 @@ dist
 dev
 .cache
 .iml
+coverage

@@ -9,7 +9,7 @@ export type CustomElementChangeListener = (
 export const onCustomElementChange = (changeListener: CustomElementChangeListener) => {
     initCache();
 
-    if (!(<any>globalThis).hmrCache.onCustomElementChange) {
-        (<any>globalThis).hmrCache.onCustomElementChange = changeListener;
+    if (!(globalThis as any).hmrCache.onCustomElementChange) {
+        (globalThis as any).hmrCache.onCustomElementChange = changeListener;
     }
 };

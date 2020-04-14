@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { fusebox, sparky } = require('fuse-box');
 const { pluginTypeChecker } = require('fuse-box-typechecker');
 
@@ -6,21 +7,20 @@ class Context {
         return fusebox({
             target: 'browser',
             homeDir: './',
-            output: `dev`,
             entry: `src/sample/index.ts`,
             webIndex: {
-                template: `src/sample/index.html`
-            },
-            logging: { level: 'verbose' },
-            dependencies: {
-                include: ['tslib']
+                template: `src/sample/index.html`,
+                publicPath: './'
             },
             cache: {
-                root: '.cache',
+                root: '.cache/sample',
                 enabled: true
             },
-            watch: { ignored: ['dist', 'dev'] },
-            hmr: true,
+            watcher: {
+                enabled: true,
+                include: ['./src']
+            },
+            hmr: { plugin: `./src/sample/fuseHmrPlugin.ts` },
             devServer: true,
             plugins: [
                 pluginTypeChecker({
@@ -31,11 +31,11 @@ class Context {
         });
     }
 }
-const { task } = sparky(Context);
+const { task, rm } = sparky(Context);
 
-task('default', async ctx => {
+task('default', async (ctx) => {
     const fuse = ctx.getConfig();
-    await fuse.runDev();
+    await fuse.runDev({ bundles: { distRoot: `.cache/dist`, app: 'app.js' } });
 });
 
 const build = (target) => {
@@ -48,27 +48,63 @@ const build = (target) => {
                 module: target,
                 lib: ['es2017', 'dom'],
                 emitDecoratorMetadata: true,
+                skipLibCheck: true,
                 sourceMap: true,
                 declaration: true,
                 importHelpers: true,
                 experimentalDecorators: true
             },
-            exclude: ['dist', 'node_modules', 'src/sample']
+            exclude: ['dist', 'node_modules', 'src/sample', 'src/__tests__']
         },
         basePath: `./`,
         name: `Building ${target}`
     });
 
     checker.printSettings();
-    let result = checker.inspectOnly();
+    const result = checker.inspectOnly();
     checker.printOnly(result);
-    
+
     console.log(`  -> Emitting js`);
     result.oldProgram.emit();
 };
 
-task('build', async ctx => {
-    ['CommonJS', 'AMD', 'System', 'UMD', 'ES6', 'ES2015', 'ESNext'].forEach(target => {
+task('build', async () => {
+    await rm('./dist');
+    ['CommonJS', 'AMD', 'System', 'UMD', 'ES6', 'ES2015', 'ESNext'].forEach((target) => {
         build(target);
     });
+});
+
+task('typecheck-package', () => {
+    const typeChecker = require('fuse-box-typechecker').TypeChecker({
+        tsConfig: './tsconfig.json',
+        basePath: './',
+        tsLint: './tslint.json',
+        name: 'typecheck and lint src and test folders',
+        shortenFilenames: true,
+        yellowOnLint: true,
+        throwOnGlobal: true,
+        throwOnSemantic: true,
+        throwOnTsLint: true,
+        throwOnSyntactic: true,
+        throwOnOptions: true,
+        tsConfigOverride: {
+            compilerOptions: {
+                rootDir: `./src/package`,
+                target: 'es2018',
+                module: 'es6',
+                lib: ['es2017', 'dom'],
+                emitDecoratorMetadata: true,
+                skipLibCheck: true,
+                sourceMap: true,
+                declaration: true,
+                importHelpers: true,
+                experimentalDecorators: true
+            },
+            exclude: ['dist', 'node_modules', 'src/sample', 'src/__tests__']
+        }
+    });
+
+    typeChecker.printSettings();
+    typeChecker.printOnly(typeChecker.inspectOnly());
 });

@@ -15,7 +15,7 @@ export function overrideCustomElementDefine() {
 
         const originalDefineFn = CustomElementRegistry.prototype.define;
 
-        CustomElementRegistry.prototype.define = function(
+        CustomElementRegistry.prototype.define = function (
             elementName: string,
             impl: any,
             options: ElementDefinitionOptions
@@ -29,15 +29,15 @@ export function overrideCustomElementDefine() {
             // this will only be a issue when bundle is loaded after body
             setMostRecentImpl(elementName, impl);
             if (!registeredCustomElement) {
-                const hookClass = new Proxy(createHookClass(elementName, impl), {
-                    construct: function(element, args, newTarget) {
+                const hookClass: any = new Proxy(createHookClass(elementName, impl), {
+                    construct: function (element, args, newTarget) {
                         const mostRecentImpl = getMostRecentImpl(elementName);
                         return constructInstance(mostRecentImpl, args, newTarget);
                     }
                 });
                 originalDefineFn.apply(this, [elementName, hookClass, options]);
             } else {
-                const onCustomElementChange = (<any>globalThis).hmrCache.onCustomElementChange;
+                const onCustomElementChange = (globalThis as any).hmrCache.onCustomElementChange;
 
                 if (onCustomElementChange && typeof onCustomElementChange === 'function') {
                     onCustomElementChange(elementName, impl, options);

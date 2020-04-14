@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 import { defineCustomElement } from './decorator/defineCustomElement';
 
 @defineCustomElement('my-comp')

@@ -41,7 +41,7 @@ export default [
     {
         input: 'dist/ES6/index.js',
         output: {
-          name: 'customElementsHmrPolyfill',
+            name: 'customElementsHmrPolyfill',
             file: './dist/custom-elements-hmr-pollyfill.umd.js',
             format: 'umd',
             sourcemap: true

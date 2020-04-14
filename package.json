@@ -1,49 +1,77 @@
 {
-  "name": "custom-elements-hmr-polyfill",
-  "version": "1.0.0",
-  "description": "Custom Elements HMR polyfill",
-  "main": "dist/CommonJS/index.js",
-  "module": "dist/ES6/index.js",
-  "typings": "dist/CommonJS/index.d.ts",
-  "scripts": {
-    "prebootstrap": "npx st-rm-rf ./node_modules package-lock.json",
-    "bootstrap": "npm i",
-    "start": "node fuse",
-    "watch": "node fuse",
-    "build": "node fuse build && npm run rollup",
-    "rollup": "./node_modules/.bin/rollup -c",
-    "test": "todo"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vegarringdal/custom-elements-hmr-polyfill.git"
-  },
-  "author": "Vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<info@aron-homberg.de>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vegarringdal/custom-elements-hmr-polyfill/issues"
-  },
-  "homepage": "https://github.com/vegarringdal/custom-elements-hmr-polyfill#readme",
-  "devDependencies": {
-    "fuse-box": "next",
-    "fuse-box-typechecker": "^3.0.0-next.29",
-    "husky": "^3.0.9",
-    "lint-staged": "^9.4.3",
-    "prettier": "^1.19.1",
-    "rollup": "^1.27.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "tslib": "^1.10.0",
-    "typescript": "^3.7.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "custom-elements-hmr-polyfill",
+    "version": "1.0.0",
+    "description": "Custom Elements HMR polyfill",
+    "main": "dist/CommonJS/index.js",
+    "module": "dist/ES6/index.js",
+    "typings": "dist/CommonJS/index.d.ts",
+    "scripts": {
+        "prebootstrap": "npx st-rm-rf ./node_modules package-lock.json",
+        "bootstrap": "npm i",
+        "start": "node fuse",
+        "watch": "node fuse",
+        "build": "node fuse build && npm run rollup",
+        "rollup": "./node_modules/.bin/rollup -c",
+        "prettier:run": "node ./node_modules/prettier/bin-prettier --write \"src/**/*.{json,md,ts}\" ",
+        "eslint": "npm run eslint:run:package && npm run eslint:run:sample",
+        "eslint:run:package": "./node_modules/.bin/eslint --fix ./src/package/**/*.ts",
+        "eslint:run:sample": "./node_modules/.bin/eslint --fix ./src/sample/**/*.ts",
+        "typecheck": "node fuse typecheck-package",
+        "test": "jest --verbose --env jest-environment-jsdom-sixteen",
+        "test:watch": "jest --runInBand --watch --verbose --env jest-environment-jsdom-sixteen",
+        "testci": "jest --collectCoverage --verbose --runInBand --env jest-environment-jsdom-sixteen && npm run typecheck && npm run eslint && codecov",
+        "test:coverage": "jest --collectCoverage --runInBand --verbose --env jest-environment-jsdom-sixteen"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vegarringdal/custom-elements-hmr-polyfill.git"
+    },
+    "author": "Vegar Ringdal<vegar.ringdal@gmail.com> & Aron Homberg<info@aron-homberg.de>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/vegarringdal/custom-elements-hmr-polyfill/issues"
+    },
+    "homepage": "https://github.com/vegarringdal/custom-elements-hmr-polyfill#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "@typescript-eslint/eslint-plugin": "^2.27.0",
+        "@typescript-eslint/parser": "^2.27.0",
+        "@babel/core": "^7.9.0",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "@babel/plugin-proposal-decorators": "^7.8.3",
+        "@babel/preset-env": "^7.9.5",
+        "@babel/preset-typescript": "^7.9.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "fuse-box": "4.0.0-next.425",
+        "fuse-box-typechecker": "^3.0.0-next.31",
+        "husky": "^4.2.5",
+        "jest": "^25.3.0",
+        "jest-environment-jsdom-sixteen": "^1.0.3",
+        "lint-staged": "^10.1.3",
+        "prettier": "^2.0.4",
+        "rollup": "^2.6.1",
+        "rollup-plugin-terser": "^5.3.0",
+        "ts-jest": "^25.3.1",
+        "tslib": "^1.11.1",
+        "typescript": "^3.8.3"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "lint-staged": {
+        "src/**/*.{json,md,ts}": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "dependencies": {
+        "@types/jest": "^25.2.1",
+        "@types/node": "^13.11.1"
     }
-  },
-  "lint-staged": {
-    "src/**/*.{json,md,ts}": [
-      "prettier --write",
-      "git add"
-    ]
-  }
 }
