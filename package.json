@@ -16,9 +16,10 @@
         "eslint": "npm run eslint:run:package && npm run eslint:run:sample",
         "eslint:run:package": "./node_modules/.bin/eslint --fix ./src/package/**/*.ts",
         "eslint:run:sample": "./node_modules/.bin/eslint --fix ./src/sample/**/*.ts",
+        "typecheck": "node fuse typecheck-package",
         "test": "jest --verbose --env jest-environment-jsdom-sixteen",
         "test:watch": "jest --runInBand --watch --verbose --env jest-environment-jsdom-sixteen",
-        "test-ci": "jest --verbose --runInBand --env jest-environment-jsdom-sixteen",
+        "test-ci": "jest --verbose --runInBand --env jest-environment-jsdom-sixteen && npm run typecheck && npm run eslint && codecov",
         "test:coverage": "jest --collectCoverage --runInBand --verbose --env jest-environment-jsdom-sixteen"
     },
     "repository": {
