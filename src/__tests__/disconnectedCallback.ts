@@ -1,6 +1,6 @@
 import { applyPolyfill, ReflowStrategy } from '../package/index';
 
-describe('test disconnectedCallback', () => {
+describe('disconnectedCallback', () => {
     beforeAll(() => {
         // app polyfill
         applyPolyfill(ReflowStrategy.NONE);

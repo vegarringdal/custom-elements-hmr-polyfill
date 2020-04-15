@@ -6,7 +6,7 @@ describe('adoptedCallback', () => {
         applyPolyfill(ReflowStrategy.NONE);
     });
 
-    it('when would someone use this?', (done) => {
+    it('move to iframe and see if it triggers', (done) => {
         /**
          * Simple custom elemnt
          */
