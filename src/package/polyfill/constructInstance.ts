@@ -21,13 +21,21 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
     }
 
     if (!check) {
-        patch(
-            mostRecentImpl.__proto__.prototype,
-            newTarget.prototype,
-            BLACKLISTED_PROTOTYPE_PATCH_METHODS
-        );
+        let proto = mostRecentImpl.__proto__;
+        let base: any = null;
+        while (proto) {
+            if ((window[proto?.__proto__?.name] as any)?.prototype instanceof Element) {
+                // if parent is instance of Element then we want it...
+                base = proto;
+            }
+            if (base) {
+                break;
+            }
+            proto = proto.__proto__;
+        }
+        patch(base.prototype, newTarget.prototype, BLACKLISTED_PROTOTYPE_PATCH_METHODS);
         // here we will update static variables/methods of "__proto__"
-        patch(mostRecentImpl.__proto__, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
+        patch(base, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
     }
 
     // PROTOTYPE
