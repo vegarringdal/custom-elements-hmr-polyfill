@@ -15,19 +15,26 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
     // Constructed instance points to outdated impl details.
 
     // PROTO check
-    let check: any = window[mostRecentImpl.__proto__.name];
+    let proto = mostRecentImpl.__proto__;
+    let check: any = null;
+    while (proto) {
+      check = window[proto.name]
+      if (check)
+        break;
+      proto = proto.__proto__;
+    }
     if (check) {
-        check = (window[mostRecentImpl.__proto__.name] as any).prototype instanceof Element;
+        check = (window[proto.name] as any).prototype instanceof Element;
     }
 
     if (!check) {
         patch(
-            mostRecentImpl.__proto__.prototype,
+            proto.prototype,
             newTarget.prototype,
             BLACKLISTED_PROTOTYPE_PATCH_METHODS
         );
         // here we will update static variables/methods of "__proto__"
-        patch(mostRecentImpl.__proto__, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
+        patch(proto, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
     }
 
     // PROTOTYPE
