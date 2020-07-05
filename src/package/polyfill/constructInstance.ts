@@ -33,9 +33,11 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
             }
             proto = proto.__proto__;
         }
-        patch(base.prototype, newTarget.prototype, BLACKLISTED_PROTOTYPE_PATCH_METHODS);
-        // here we will update static variables/methods of "__proto__"
-        patch(base, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
+        if (base.HMR_PATCH_PROTOTYPE) {
+            patch(base.prototype, newTarget.prototype, BLACKLISTED_PROTOTYPE_PATCH_METHODS);
+            // here we will update static variables/methods of "__proto__"
+            patch(base, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
+        }
     }
 
     // PROTOTYPE

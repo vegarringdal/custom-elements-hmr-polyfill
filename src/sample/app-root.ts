@@ -1,7 +1,7 @@
 import { defineCustomElement, customElementExtended } from './decorator/defineCustomElement';
-
 @defineCustomElement('app-one')
 export class ElementX extends HTMLElement {
+    static HMR_PATCH_PROTOTYPE = true; // option so polyfils updates prototype of functions etc
     static foo = 'Foo man';
     notStatic = 'foo-mutated';
 
@@ -39,6 +39,7 @@ export class ElementX extends HTMLElement {
 
 @customElementExtended('app-two')
 export class ElementY extends HTMLElement {
+    static HMR_PATCH_PROTOTYPE = true; // option so polyfils updates prototype of functions etc
     static foo = 'Foo man';
     notStatic = 'foo-mutated';
 
@@ -76,6 +77,7 @@ export class ElementY extends HTMLElement {
 
 @customElementExtended('app-third', { extends: 'div' })
 export class ElementZ extends HTMLDivElement {
+    static HMR_PATCH_PROTOTYPE = true; // option so polyfils updates prototype of functions etc
     static foo = 'Foo man';
     notStatic = 'foo-mutated';
 
