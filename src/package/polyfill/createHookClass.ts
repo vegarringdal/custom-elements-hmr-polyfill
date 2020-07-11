@@ -30,7 +30,8 @@ export function createHookClass(elementName: string, originalImpl: any) {
                         mostRecentImpl.attributeChangedCallback.apply(this, [
                             mutation.attributeName,
                             mutation.oldValue,
-                            mutation.target.getAttribute(mutation.attributeName)
+                            this.getAttribute(mutation.attributeName),
+                            null
                         ]);
                     }
                 });
@@ -40,11 +41,15 @@ export function createHookClass(elementName: string, originalImpl: any) {
             if (attributes) {
                 if (Array.isArray(attributes)) {
                     attributes.forEach((attributeName) => {
-                        mostRecentImpl.attributeChangedCallback.apply(this, [
-                            attributeName,
-                            null,
-                            this.getAttribute(attributeName)
-                        ]);
+                        const haveAtt = this.getAttributeNode(attributeName);
+                        if (haveAtt) {
+                            mostRecentImpl.attributeChangedCallback.apply(this, [
+                                attributeName,
+                                null,
+                                this.getAttribute(attributeName),
+                                null
+                            ]);
+                        }
                     });
                 } else {
                     console.warn(`observedAttributes in ${elementName} is not array, please fix`);

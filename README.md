@@ -68,7 +68,9 @@ This polyfill requires support of the following browser API's (natively).
 
 ## Limitations
 
-None. This polyfill is 100% web standard compliant.
+`attributeChangedCallback` returned namespace will be null
+Not sure how namespaces works for attributes atm...
+
 
 For reference see:
 [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
