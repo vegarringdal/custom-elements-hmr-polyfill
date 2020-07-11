@@ -1,3 +1,5 @@
 import './hmr-polyfill';
-import './my-comp';
-import './app-root';
+import './elementNo1';
+import './elementNo2';
+import './elementNo3';
+import './superExtendElement';
