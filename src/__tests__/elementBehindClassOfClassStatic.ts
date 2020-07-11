@@ -130,7 +130,6 @@ describe('test edited in function of extended classes of classes', () => {
          */
         @simpleDecoratorFN('app-root')
         class MyElement extends HTMLElement {
-            static HMR_PATCH_PROTOTYPE = true; // option so polyfils updates prototype of functions etc
             test1 = 'changed1';
             test2 = 'changed2';
             connectedCallback() {
