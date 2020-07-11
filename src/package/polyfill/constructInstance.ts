@@ -33,18 +33,22 @@ export function constructInstance(mostRecentImpl: any, args: any, newTarget: any
             }
             proto = proto.__proto__;
         }
-        if (base.HMR_PATCH_PROTOTYPE) {
+
+        if (!(window as any).HMR_SKIP_DEEP_PATCH) {
             patch(base.prototype, newTarget.prototype, BLACKLISTED_PROTOTYPE_PATCH_METHODS);
-            // here we will update static variables/methods of "__proto__"
-            patch(base, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
         }
+
+        // not needed...
+        // here we will update static variables/methods of "__proto__"
+        // patch(base, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
     }
 
     // PROTOTYPE
     patch(mostRecentImpl.prototype, newTarget.prototype, BLACKLISTED_PROTOTYPE_PATCH_METHODS);
 
+    // not needed...
     // here we will update static variables/methods of class
-    patch(mostRecentImpl, mostRecentImpl, BLACKLISTED_STATIC_PATCH_METHODS);
+    //patch(mostRecentImpl, newTarget, BLACKLISTED_STATIC_PATCH_METHODS);
 
     const customElementInstance = Reflect.construct(mostRecentImpl, args, newTarget);
 
