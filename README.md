@@ -68,8 +68,34 @@ This polyfill requires support of the following browser API's (natively).
 
 ## Limitations
 
+1: 
+
 `attributeChangedCallback` returned namespace will be null
 Not sure how namespaces works for attributes atm...
+
+2: 
+
+Since HMR polyfill wraps your class in a proxy, you need to use `customElements.get('my-element')` to get the class thats sent to `customElements.define()`.
+
+Sample under will not work, since your class isn't really sent to `customELements.define`, a proxy handler is.
+
+```ts
+class MyElement extends HTMLElement {}
+window.customElements.define('my-element', MyElement);
+new MyElement();
+```
+
+Solution:
+
+```ts
+class MyElement extends HTMLElement {}
+window.customElements.define('my-element', MyElement);
+const MyElementHMR = customElements.get('my-element');
+new MyElementHMR();
+```
+
+Or just use `document.createElement('my-element')`
+
 
 
 For reference see:
