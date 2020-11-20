@@ -10,7 +10,7 @@ module.exports = {
     globals: {
         'ts-jest': {
             diagnostics: false,
-            tsConfig: './tsconfig.json'
+            tsconfig: './tsconfig.json'
         }
     },
     collectCoverageFrom: ['src/custom-elements-hmr-polyfill/package/**/*.ts']
