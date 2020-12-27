@@ -68,16 +68,22 @@ This polyfill requires support of the following browser API's (natively).
 
 ## Limitations
 
-1: 
+---
 
-`attributeChangedCallback` returned namespace will be null
-Not sure how namespaces works for attributes atm...
+1:
 
-2: 
+`attributeChangedCallback` returned namespace will be null Not sure how namespaces works for
+attributes atm...
 
-Since HMR polyfill wraps your class in a proxy, you need to use `customElements.get('my-element')` to get the class thats sent to `customElements.define()`.
+---
 
-Sample under will not work, since your class isn't really sent to `customELements.define`, a proxy handler is.
+2:
+
+Since HMR polyfill wraps your class in a proxy, you need to use `customElements.get('my-element')`
+to get the class thats sent to `customElements.define()`.
+
+Sample under will not work, since your class isn't really sent to `customELements.define`, a proxy
+handler is.
 
 ```ts
 class MyElement extends HTMLElement {}
@@ -96,7 +102,29 @@ new MyElementHMR();
 
 Or just use `document.createElement('my-element')`
 
+---
 
+3:  
+Some elements dont like the deep patching we do, like lit-element.
+
+Solution: You can try with `(window as any).HMR_SKIP_DEEP_PATCH = true` to skip some of this.
+
+---
+
+4:  
+Atm I return empty array on observedAttributes in the proxy so browser dont get them. This might
+create issues for some libs, if it does we can maybe add a option to return a array and just
+overlook some elements might be called 2 times
+
+---
+
+5:
+
+Some elements just do a lot and have own state containers / instance variables I cant do much about.
+
+Try and load these before this polyfill, you really dont need these to be redefined..
+
+--
 
 For reference see:
 [W3C/WhatWG standard limitation of Web Component re-definition](https://github.com/w3c/webcomponents/issues/829).
