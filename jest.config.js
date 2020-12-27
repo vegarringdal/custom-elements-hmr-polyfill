@@ -1,6 +1,6 @@
 module.exports = {
     preset: 'ts-jest',
-    testEnvironment: 'jest-environment-jsdom-sixteen',
+    testEnvironment: 'jsdom',
     maxConcurrency: 1,
     verbose: true,
     moduleDirectories: ['node_modules'],
