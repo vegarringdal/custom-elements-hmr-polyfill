@@ -20,7 +20,7 @@ class Context {
                 enabled: true,
                 include: ['./src']
             },
-            hmr: { plugin: `./src/sample/fuseHmrPlugin.ts` },
+            hmr: true,
             devServer: true,
             plugins: [
                 pluginTypeChecker({
