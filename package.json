@@ -8,8 +8,8 @@
     "scripts": {
         "prebootstrap": "npx st-rm-rf ./node_modules package-lock.json",
         "bootstrap": "npm i",
-        "start": "node fuse",
-        "watch": "node fuse",
+        "start": "node script-start",
+        "watch": "node script-start",
         "build": "node script-build && npm run rollup",
         "rollup": "rollup -c",
         "prettier:run": "node ./node_modules/prettier/bin-prettier --write \"src/**/*.{json,md,ts}\" ",

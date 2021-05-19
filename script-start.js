@@ -15,7 +15,7 @@ const {
    * client bundle
    */
   client(
-    { watch: "./src/sample/**/*.ts" },
+    { watch: "./src/**/*.ts" },
     {
       color: true,
       define: {
