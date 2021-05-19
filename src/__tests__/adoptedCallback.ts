@@ -45,7 +45,7 @@ describe('adoptedCallback', () => {
 
             requestAnimationFrame(() => {
                 expect(adoptedCallbackValue).toEqual(
-                    'adopted from http://localhost/ to http://localhost/'
+                    'adopted from http://localhost/ to about:blank'
                 );
 
                 done();

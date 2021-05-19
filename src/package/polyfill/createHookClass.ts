@@ -59,7 +59,7 @@ export function createHookClass(elementName: string, originalImpl: any) {
             // create and observe
             (this as any)[getSymbolObserver(elementName)] = new MutationObserver(callback);
             (this as any)[getSymbolObserver(elementName)].observe(
-                (this as unknown) as Node,
+                this as unknown as Node,
                 observerOptions
             );
 
