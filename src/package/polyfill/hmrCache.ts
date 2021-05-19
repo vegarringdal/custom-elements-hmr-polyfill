@@ -24,9 +24,8 @@ export function setCacheAsInitialized() {
 
 export function getSymbolAttributes(elementName: string) {
     if (!(globalThis as any).hmrCacheSymbolAttributes[elementName]) {
-        (globalThis as any).hmrCacheSymbolAttributes[elementName] = Symbol(
-            'observedAttributesArray'
-        );
+        (globalThis as any).hmrCacheSymbolAttributes[elementName] =
+            Symbol('observedAttributesArray');
         return (globalThis as any).hmrCacheSymbolAttributes[elementName];
     } else {
         return (globalThis as any).hmrCacheSymbolAttributes[elementName];
